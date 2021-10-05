@@ -18,6 +18,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".RegistrationActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>
