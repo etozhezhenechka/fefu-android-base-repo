@@ -1,8 +1,10 @@
 package ru.fefu.activitytracker
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -25,5 +27,11 @@ class RegistrationActivity : AppCompatActivity(R.layout.activity_registration) {
 
         val privacyText = findViewById<TextView>(R.id.policy_reg_text)
         privacyText.movementMethod = LinkMovementMethod.getInstance()
+
+        val loginBtn = findViewById<Button>(R.id.continue_reg_button)
+        loginBtn.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
