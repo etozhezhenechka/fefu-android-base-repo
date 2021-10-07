@@ -20,4 +20,9 @@
 
     <string name="sex_male">Мужской</string>
     <string name="sex_female">Женский</string>
+
+    <string name="label_login">Вход</string>
+    <string name="login_hint_log">Логин</string>
+    <string name="password_hint_log">Пароль</string>
+    <string name="continue_btn_log">Продолжить</string>
 </resources>
