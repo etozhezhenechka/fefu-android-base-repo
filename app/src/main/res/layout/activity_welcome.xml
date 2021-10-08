@@ -20,23 +20,26 @@
         android:id="@+id/app_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
         android:src="@drawable/ic_welcome_app_logo"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@+id/app_label"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.75"
+        app:layout_constraintVertical_chainStyle="packed"
         />
 
     <ImageView
         android:id="@+id/app_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:src="@drawable/ic_welcome_app_label"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/app_slogan"
         app:layout_constraintTop_toBottomOf="@id/app_logo"
         />
 
@@ -45,7 +48,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="54dp"
 
         android:text="@string/slogan_welcome"
         android:textAlignment="center"
@@ -55,14 +57,17 @@
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_label"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/app_subslogan"
+
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintVertical_chainStyle="packed"
         />
 
     <TextView
         android:id="@+id/app_subslogan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="40dp"
 
         android:text="@string/subslogan_welcome"
@@ -74,13 +79,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_slogan"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/reg_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="57dp"
         android:layout_marginHorizontal="40dp"
 
         android:text="@string/register_btn_welcome"
@@ -88,6 +93,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_subslogan"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
+
+        app:layout_constraintVertical_chainStyle="packed"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -102,8 +110,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/reg_button"
         app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintVertical_bias="0.1"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
