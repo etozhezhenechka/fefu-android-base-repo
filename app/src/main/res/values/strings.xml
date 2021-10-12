@@ -25,4 +25,7 @@
     <string name="login_hint_log">Логин</string>
     <string name="password_hint_log">Пароль</string>
     <string name="continue_btn_log">Продолжить</string>
+
+    <string name="menu_activity_tracker">Активность</string>
+    <string name="menu_profile_tracker">Профиль</string>
 </resources>
