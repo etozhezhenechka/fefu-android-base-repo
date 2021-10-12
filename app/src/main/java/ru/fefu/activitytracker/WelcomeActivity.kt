@@ -14,6 +14,10 @@ class WelcomeActivity : AppCompatActivity(R.layout.activity_welcome) {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupActivity()
+    }
+
+    private fun setupActivity() {
         binding.regButton.setOnClickListener {
             val intent = Intent(this, RegistrationActivity::class.java)
             startActivity(intent)

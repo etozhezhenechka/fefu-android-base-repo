@@ -13,7 +13,9 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
 
+    private fun setupActivity() {
         binding.backLogBtn.setOnClickListener {
             finish()
         }

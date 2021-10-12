@@ -17,6 +17,10 @@ class RegistrationActivity : AppCompatActivity(R.layout.activity_registration) {
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupActivity()
+    }
+
+    private fun setupActivity() {
         binding.backRegBtn.setOnClickListener {
             finish()
         }
