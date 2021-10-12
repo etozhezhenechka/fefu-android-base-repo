@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.fefu.activitytracker.databinding.ActivityLoginBinding
+import ru.fefu.activitytracker.tracker.TrackerActivity
 
 class LoginActivity : AppCompatActivity(R.layout.activity_login) {
     private lateinit var binding: ActivityLoginBinding
