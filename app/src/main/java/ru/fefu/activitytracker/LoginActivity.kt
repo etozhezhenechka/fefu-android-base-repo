@@ -13,6 +13,8 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupActivity()
     }
 
     private fun setupActivity() {
