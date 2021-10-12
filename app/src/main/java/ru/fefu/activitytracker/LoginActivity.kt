@@ -1,5 +1,6 @@
 package ru.fefu.activitytracker
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.fefu.activitytracker.databinding.ActivityLoginBinding
@@ -15,6 +16,11 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login) {
 
         binding.backLogBtn.setOnClickListener {
             finish()
+        }
+
+        binding.continueLogButton.setOnClickListener {
+            val intent = Intent(this, TrackerActivity::class.java)
+            startActivity(intent)
         }
     }
 }
