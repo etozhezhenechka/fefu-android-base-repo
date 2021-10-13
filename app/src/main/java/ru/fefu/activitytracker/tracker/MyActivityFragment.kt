@@ -15,8 +15,8 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     companion object {
         const val tag = "my_activity_fragment"
 
-        fun newInstance() : ActivityFragment {
-            val fragment = ActivityFragment()
+        fun newInstance() : MyActivityFragment {
+            val fragment = MyActivityFragment()
             fragment.arguments = Bundle()
             return fragment
         }

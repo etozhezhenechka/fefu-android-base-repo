@@ -28,4 +28,7 @@
 
     <string name="menu_activity_tracker">Активность</string>
     <string name="menu_profile_tracker">Профиль</string>
+
+    <string name="pager_my_tab">Мои</string>
+    <string name="pager_users_tab">Пользователей</string>
 </resources>
