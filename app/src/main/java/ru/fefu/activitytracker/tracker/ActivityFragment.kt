@@ -36,7 +36,8 @@ class ActivityFragment : Fragment(R.layout.fragment_activity) {
         binding.pagerActivity.adapter = ActivityFragmentAdapter(this)
 
         TabLayoutMediator(binding.tabsActivity, binding.pagerActivity) { tab, position ->
-            if (position == 0) tab.text = getString(R.string.pager_my_tab)
+            if (position == ActivityFragmentAdapter.firstPosition)
+                tab.text = getString(R.string.pager_my_tab)
             else tab.text = getString(R.string.pager_users_tab)
         }.attach()
     }

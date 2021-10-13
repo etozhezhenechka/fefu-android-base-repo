@@ -5,11 +5,16 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class ActivityFragmentAdapter(fragment: ActivityFragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
-        return 2
+        return itemsLen
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0) MyActivityFragment.newInstance()
+        return if (position == firstPosition) MyActivityFragment.newInstance()
         else UsersActivityFragment.newInstance()
+    }
+
+    companion object {
+        const val itemsLen = 2
+        const val firstPosition = 0
     }
 }
