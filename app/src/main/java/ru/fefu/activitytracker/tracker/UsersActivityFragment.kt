@@ -13,7 +13,7 @@ class UsersActivityFragment : Fragment(R.layout.fragment_users_activity) {
     private val binding get() = _binding!!
 
     companion object {
-        const val tag = "activity_fragment"
+        const val tag = "users_activity_fragment"
 
         fun newInstance() : ActivityFragment {
             val fragment = ActivityFragment()
