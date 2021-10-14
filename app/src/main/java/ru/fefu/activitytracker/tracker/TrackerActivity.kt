@@ -32,11 +32,14 @@ class TrackerActivity : AppCompatActivity(R.layout.activity_tracker) {
     }
 
     private fun setupNavbarHandling() {
-        val navbarHandler = NavbarHandler(
-            MetaFragment(ActivityFragment.newInstance(), ActivityFragment.tag),
-            MetaFragment(ProfileFragment.newInstance(), ProfileFragment.tag),
-            supportFragmentManager
+        val fragments = listOf(
+            MetaFragment(R.id.action_activity_tracker, ActivityFragment.newInstance(),
+                ActivityFragment.tag),
+            MetaFragment(R.id.action_profile_tracker, ProfileFragment.newInstance(),
+                ProfileFragment.tag)
         )
+
+        val navbarHandler = NavbarHandler(fragments, supportFragmentManager)
 
         binding.navbarTracker.setOnItemSelectedListener { item ->
             navbarHandler.switchFragments(item.itemId)
