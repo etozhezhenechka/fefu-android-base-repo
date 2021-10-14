@@ -5,26 +5,26 @@ import ru.fefu.activitytracker.R
 
 
 class NavbarHandler(private val fragments: List<MetaFragment>, private val fragmentManager: FragmentManager) {
-    private var _activeFragment = fragments[0]
-    private lateinit var _hiddenFragment : MetaFragment
+    private var _activeMetaFragment = fragments[0]
+    private lateinit var _hiddenMetaFragment : MetaFragment
 
-    fun switchFragments(buttonId: Int) {
-        if (_activeFragment.buttonId == buttonId) return
+    fun switchFragments(clickedButtonId: Int) {
+        if (_activeMetaFragment.buttonId == clickedButtonId) return
 
-        val activeFrag = fragmentManager.findFragmentByTag(_activeFragment.tag)
-        if (activeFrag != null) {
+        val activeFragment = fragmentManager.findFragmentByTag(_activeMetaFragment.tag)
+        if (activeFragment != null) {
             fragmentManager.beginTransaction().apply {
-                hide(activeFrag)
+                hide(activeFragment)
                 commit()
             }
         }
 
-        _hiddenFragment = fragments.filter { it.buttonId == buttonId }[0]
+        _hiddenMetaFragment = fragments.filter { it.buttonId == clickedButtonId }[0]
 
-        val hiddenFrag = fragmentManager.findFragmentByTag(_hiddenFragment.tag)
-        if (hiddenFrag != null) {
+        val hiddenFragment = fragmentManager.findFragmentByTag(_hiddenMetaFragment.tag)
+        if (hiddenFragment != null) {
             fragmentManager.beginTransaction().apply {
-                show(hiddenFrag)
+                show(hiddenFragment)
                 commit()
             }
         }
@@ -32,13 +32,13 @@ class NavbarHandler(private val fragments: List<MetaFragment>, private val fragm
             fragmentManager.beginTransaction().apply {
                 add(
                     R.id.fragment_view_tracker,
-                    _hiddenFragment.newInstance(),
-                    _hiddenFragment.tag
+                    _hiddenMetaFragment.newInstance(),
+                    _hiddenMetaFragment.tag
                 )
                 commit()
             }
         }
 
-        _activeFragment = _hiddenFragment
+        _activeMetaFragment = _hiddenMetaFragment
     }
 }
