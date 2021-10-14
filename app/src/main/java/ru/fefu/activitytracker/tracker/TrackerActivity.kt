@@ -39,19 +39,8 @@ class TrackerActivity : AppCompatActivity(R.layout.activity_tracker) {
         )
 
         binding.navbarTracker.setOnItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.action_activity_tracker ->  {
-                    navbarHandler.switchFragments(item.itemId)
-                    true
-                }
-
-                R.id.action_profile_tracker ->  {
-                    navbarHandler.switchFragments(item.itemId)
-                    true
-                }
-
-                else -> false
-            }
+            navbarHandler.switchFragments(item.itemId)
+            true
         }
     }
 }
