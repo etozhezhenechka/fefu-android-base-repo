@@ -5,13 +5,33 @@ import ru.fefu.activitytracker.R
 
 
 class NavbarHandler(private val fragments: List<MetaFragment>, private val fragmentManager: FragmentManager) {
-    private var _activeMetaFragment = fragments[0]
     private lateinit var _hiddenMetaFragment : MetaFragment
 
     fun switchFragments(clickedButtonId: Int) {
-        if (_activeMetaFragment.buttonId == clickedButtonId) return
+        val activeFragment = fragmentManager.fragments.firstOrNull { !it.isHidden }
 
-        val activeFragment = fragmentManager.findFragmentByTag(_activeMetaFragment.tag)
+        _hiddenMetaFragment = fragments.filter { it.buttonId == clickedButtonId }[0]
+        val hiddenFragment = fragmentManager.findFragmentByTag(_hiddenMetaFragment.tag)
+
+        if (activeFragment == hiddenFragment) return
+
+        if (hiddenFragment == null) {
+            fragmentManager.beginTransaction().apply {
+                add(
+                    R.id.fragment_view_tracker,
+                    _hiddenMetaFragment.fragment,
+                    _hiddenMetaFragment.tag
+                )
+                commit()
+            }
+        }
+        else {
+            fragmentManager.beginTransaction().apply {
+                show(hiddenFragment)
+                commit()
+            }
+        }
+
         if (activeFragment != null) {
             fragmentManager.beginTransaction().apply {
                 hide(activeFragment)
@@ -19,26 +39,5 @@ class NavbarHandler(private val fragments: List<MetaFragment>, private val fragm
             }
         }
 
-        _hiddenMetaFragment = fragments.filter { it.buttonId == clickedButtonId }[0]
-
-        val hiddenFragment = fragmentManager.findFragmentByTag(_hiddenMetaFragment.tag)
-        if (hiddenFragment != null) {
-            fragmentManager.beginTransaction().apply {
-                show(hiddenFragment)
-                commit()
-            }
-        }
-        else {
-            fragmentManager.beginTransaction().apply {
-                add(
-                    R.id.fragment_view_tracker,
-                    _hiddenMetaFragment.newInstance(),
-                    _hiddenMetaFragment.tag
-                )
-                commit()
-            }
-        }
-
-        _activeMetaFragment = _hiddenMetaFragment
     }
 }
