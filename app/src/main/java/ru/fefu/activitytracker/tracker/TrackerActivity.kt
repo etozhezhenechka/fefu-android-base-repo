@@ -2,6 +2,7 @@ package ru.fefu.activitytracker.tracker
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.ActivityTrackerBinding
 
@@ -32,18 +33,27 @@ class TrackerActivity : AppCompatActivity(R.layout.activity_tracker) {
     }
 
     private fun setupNavbarHandling() {
-        val fragments = listOf(
-            MetaFragment(R.id.action_activity_tracker, ActivityFragment.newInstance(),
+        val metaFragments = listOf(
+            MetaFragment(R.id.action_activity_tracker, getFragment(ActivityFragment.tag),
                 ActivityFragment.tag),
-            MetaFragment(R.id.action_profile_tracker, ProfileFragment.newInstance(),
+            MetaFragment(R.id.action_profile_tracker, getFragment(ProfileFragment.tag),
                 ProfileFragment.tag)
         )
 
-        val navbarHandler = NavbarHandler(fragments, supportFragmentManager)
+        val navbarHandler = NavbarHandler(metaFragments, supportFragmentManager)
 
         binding.navbarTracker.setOnItemSelectedListener { item ->
             navbarHandler.switchFragments(item.itemId)
             true
         }
+    }
+
+    private fun getFragment(tag: String) : Fragment {
+        return supportFragmentManager.findFragmentByTag(tag)
+            ?: when (tag) {
+                ActivityFragment.tag -> ActivityFragment.newInstance()
+                ProfileFragment.tag -> ProfileFragment.newInstance()
+                else -> return Fragment()
+            }
     }
 }
