@@ -3,7 +3,7 @@
 
     <string name="slogan_welcome">Пожалуй лучший фитнес трекер в ДВФУ</string>
     <string name="subslogan_welcome">Созданный студентами 2-ого курса</string>
-    <string name="register_btn_welcome">Зарегестрироваться</string>
+    <string name="register_btn_welcome">Зарегистрироваться</string>
     <string name="login_btn_welcome">Уже есть аккаунт?</string>
 
     <string name="label_registration">Регистрация</string>
@@ -25,4 +25,10 @@
     <string name="login_hint_log">Логин</string>
     <string name="password_hint_log">Пароль</string>
     <string name="continue_btn_log">Продолжить</string>
+
+    <string name="menu_activity_tracker">Активность</string>
+    <string name="menu_profile_tracker">Профиль</string>
+
+    <string name="pager_my_tab">Мои</string>
+    <string name="pager_users_tab">Пользователей</string>
 </resources>
