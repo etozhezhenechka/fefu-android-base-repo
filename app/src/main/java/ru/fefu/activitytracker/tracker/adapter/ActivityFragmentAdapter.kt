@@ -1,7 +1,10 @@
-package ru.fefu.activitytracker.tracker
+package ru.fefu.activitytracker.tracker.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import ru.fefu.activitytracker.tracker.ActivityFragment
+import ru.fefu.activitytracker.tracker.MyActivityFragment
+import ru.fefu.activitytracker.tracker.UsersActivityFragment
 
 class ActivityFragmentAdapter(fragment: ActivityFragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
