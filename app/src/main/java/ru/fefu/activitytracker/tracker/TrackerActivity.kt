@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.ActivityTrackerBinding
+import ru.fefu.activitytracker.tracker.fragment.ActivityFragment
+import ru.fefu.activitytracker.tracker.fragment.MetaFragment
+import ru.fefu.activitytracker.tracker.fragment.ProfileFragment
 
 class TrackerActivity : AppCompatActivity(R.layout.activity_tracker) {
     private lateinit var binding: ActivityTrackerBinding
