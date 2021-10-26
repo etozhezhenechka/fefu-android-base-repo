@@ -1,6 +1,6 @@
 package ru.fefu.activitytracker.tracker.model
 
-class UserActivityModel(
+class UsersActivityModel(
     activityProgress: String,
     timeProgress: String,
     activityType: String,
