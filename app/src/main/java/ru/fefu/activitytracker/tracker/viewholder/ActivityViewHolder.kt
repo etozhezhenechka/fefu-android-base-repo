@@ -2,10 +2,11 @@ package ru.fefu.activitytracker.tracker.viewholder
 
 import android.view.View
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import ru.fefu.activitytracker.R
+import ru.fefu.activitytracker.tracker.model.ActivityModel
+import ru.fefu.activitytracker.tracker.model.CardItemModel
 
-open class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+open class ActivityViewHolder(itemView: View) : ItemViewHolder(itemView) {
     var activityProgressTextView: TextView? = null
     var timeProgressTextView: TextView? = null
     var activityTypeTextView: TextView? = null
@@ -16,5 +17,13 @@ open class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         timeProgressTextView = itemView.findViewById(R.id.time_progress_caption)
         activityTypeTextView = itemView.findViewById(R.id.activity_type_caption)
         activityDateTextView = itemView.findViewById(R.id.activity_date_caption)
+    }
+
+    override fun bindValues(itemModel: CardItemModel) {
+        val activityModel = itemModel as ActivityModel
+        activityProgressTextView?.text = activityModel.activityProgress
+        timeProgressTextView?.text = activityModel.timeProgress
+        activityTypeTextView?.text = activityModel.activityType
+        activityDateTextView?.text = activityModel.activityDate
     }
 }
