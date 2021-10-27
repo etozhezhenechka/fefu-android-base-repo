@@ -1,10 +1,7 @@
 package ru.fefu.activitytracker.tracker.model
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.Duration
 import java.time.LocalTime
-import kotlin.math.abs
 
 class ActivityInfo(private val distance: Double, private val startTime: LocalTime,
                    private val endTime: LocalTime, private val type: String,
