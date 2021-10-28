@@ -42,6 +42,17 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         val recycleView = binding.myActivityRecyclerView
         recycleView.layoutManager = LinearLayoutManager(activity)
 
+        fillList()
+
+        recycleView.adapter = MyActivityAdapter(items)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun fillList() {
         val activitiesList = listOf(
             ActivityInfo(
                 11.4,
@@ -65,12 +76,5 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         for (item in activitiesList) {
             items.add(ActivityModel(item))
         }
-
-        recycleView.adapter = MyActivityAdapter(items)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
