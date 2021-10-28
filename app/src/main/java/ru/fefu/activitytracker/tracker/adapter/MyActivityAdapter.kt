@@ -2,8 +2,11 @@ package ru.fefu.activitytracker.tracker.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.fefu.activitytracker.R
+import ru.fefu.activitytracker.tracker.fragment.MyActivityDetailsFragment
 import ru.fefu.activitytracker.tracker.model.ActivityModel
 import ru.fefu.activitytracker.tracker.model.CardItemModel
 import ru.fefu.activitytracker.tracker.model.DateLabelModel
@@ -11,7 +14,10 @@ import ru.fefu.activitytracker.tracker.viewholder.ActivityViewHolder
 import ru.fefu.activitytracker.tracker.viewholder.DateLabelViewHolder
 import ru.fefu.activitytracker.tracker.viewholder.ItemViewHolder
 
-open class MyActivityAdapter(private val items: List<CardItemModel>) : RecyclerView.Adapter<ItemViewHolder>() {
+open class MyActivityAdapter(private val items: List<CardItemModel>,
+                             private val fragmentManager: FragmentManager
+) : RecyclerView.Adapter<ItemViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return when (viewType) {
             0 -> {
@@ -38,9 +44,27 @@ open class MyActivityAdapter(private val items: List<CardItemModel>) : RecyclerV
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bindValues(items[position])
+
+        if (holder is ActivityViewHolder) {
+            holder.itemView.setOnClickListener {
+                fragmentManager.beginTransaction().apply {
+                    replace(
+                        R.id.fragment_view_tracker,
+                        getFragment()
+                    )
+                    addToBackStack(MyActivityDetailsFragment.tag)
+                    commit()
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    private fun getFragment() : Fragment {
+        return fragmentManager.findFragmentByTag(MyActivityDetailsFragment.tag)
+            ?: MyActivityDetailsFragment.newInstance()
     }
 }

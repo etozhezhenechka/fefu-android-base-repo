@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentUsersActivityBinding
+import ru.fefu.activitytracker.tracker.adapter.MyActivityAdapter
 import ru.fefu.activitytracker.tracker.adapter.UsersActivityAdapter
 import ru.fefu.activitytracker.tracker.model.*
 import java.time.LocalDateTime
@@ -42,6 +43,17 @@ class UsersActivityFragment : Fragment(R.layout.fragment_users_activity) {
         val recycleView = binding.userActivityRecyclerView
         recycleView.layoutManager = LinearLayoutManager(activity)
 
+        fillList()
+
+        recycleView.adapter = activity?.let { UsersActivityAdapter(items, it.supportFragmentManager) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun fillList() {
         val activitiesList = listOf(
             ActivityInfo(
                 11.4,
@@ -65,12 +77,5 @@ class UsersActivityFragment : Fragment(R.layout.fragment_users_activity) {
         for (item in activitiesList) {
             items.add(UsersActivityModel(item))
         }
-
-        recycleView.adapter = UsersActivityAdapter(items)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
