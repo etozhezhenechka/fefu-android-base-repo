@@ -31,6 +31,14 @@ class UsersActivityDetailsFragment : Fragment(R.layout.fragment_users_activity_d
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.usersActivityToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
