@@ -1,10 +1,10 @@
 package ru.fefu.activitytracker.tracker.model
 
 import java.time.Duration
-import java.time.LocalTime
+import java.time.LocalDateTime
 
-class ActivityInfo(private val distance: Double, private val startTime: LocalTime,
-                   private val endTime: LocalTime, private val type: String,
+class ActivityInfo(private val distance: Double, private val startTime: LocalDateTime,
+                   private val endTime: LocalDateTime, private val type: String,
                    private val username: String = "") {
 
     private fun getDurationString(duration: Duration, hoursOnly: Boolean = false): String {
@@ -23,7 +23,7 @@ class ActivityInfo(private val distance: Double, private val startTime: LocalTim
     }
 
     fun getOffset(): String {
-        val currentDate = LocalTime.now()
+        val currentDate = LocalDateTime.now()
 
         val offset = Duration.between(currentDate, endTime).abs()
         return "${getDurationString(offset, true)} назад"
