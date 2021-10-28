@@ -47,11 +47,22 @@ open class MyActivityAdapter(private val items: List<CardItemModel>,
 
         if (holder is ActivityViewHolder) {
             holder.itemView.setOnClickListener {
+                val activeFragment = fragmentManager.fragments.firstOrNull { !it.isHidden }
+
                 fragmentManager.beginTransaction().apply {
-                    replace(
-                        R.id.fragment_view_tracker,
-                        getFragment()
-                    )
+                    if (activeFragment != null) hide(activeFragment)
+
+                    val hiddenFragment = fragmentManager.findFragmentByTag(MyActivityDetailsFragment.tag)
+                    if (hiddenFragment != null) {
+                        show(hiddenFragment)
+                    }
+                    else {
+                        add(
+                            R.id.fragment_view_tracker,
+                            getFragment(),
+                            MyActivityDetailsFragment.tag
+                        )
+                    }
                     addToBackStack(MyActivityDetailsFragment.tag)
                     commit()
                 }

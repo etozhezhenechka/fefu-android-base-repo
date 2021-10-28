@@ -38,11 +38,22 @@ class UsersActivityAdapter(private val items: List<CardItemModel>,
 
         if (holder is UserActivityViewHolder) {
             holder.itemView.setOnClickListener {
+                val activeFragment = fragmentManager.fragments.firstOrNull { !it.isHidden }
+
                 fragmentManager.beginTransaction().apply {
-                    replace(
-                        R.id.fragment_view_tracker,
-                        getFragment()
-                    )
+                    if (activeFragment != null) hide(activeFragment)
+
+                    val hiddenFragment = fragmentManager.findFragmentByTag(UsersActivityDetailsFragment.tag)
+                    if (hiddenFragment != null) {
+                        show(hiddenFragment)
+                    }
+                    else {
+                        add(
+                            R.id.fragment_view_tracker,
+                            getFragment(),
+                            UsersActivityDetailsFragment.tag
+                        )
+                    }
                     addToBackStack(UsersActivityDetailsFragment.tag)
                     commit()
                 }
