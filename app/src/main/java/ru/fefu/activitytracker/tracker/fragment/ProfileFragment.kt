@@ -31,8 +31,28 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState == null) {
+            childFragmentManager.beginTransaction().apply {
+                add(
+                    R.id.fragment_view_profile,
+                    getFragment(),
+                    RecyclerViewFragment.tag
+                )
+                commit()
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getFragment() : Fragment {
+        return childFragmentManager.findFragmentByTag(UserFragment.tag)
+            ?: UserFragment.newInstance()
     }
 }

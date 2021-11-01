@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.tabs.TabLayoutMediator
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentActivityBinding
-import ru.fefu.activitytracker.tracker.adapter.ActivityFragmentAdapter
 
-class ActivityFragment : Fragment(R.layout.fragment_activity) {
+class ActivityFragment : Fragment() {
     private var _binding: FragmentActivityBinding? = null
     private val binding get() = _binding!!
 
@@ -34,17 +32,27 @@ class ActivityFragment : Fragment(R.layout.fragment_activity) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.pagerActivity.adapter = ActivityFragmentAdapter(this)
+        super.onViewCreated(view, savedInstanceState)
 
-        TabLayoutMediator(binding.tabsActivity, binding.pagerActivity) { tab, position ->
-            if (position == ActivityFragmentAdapter.firstPosition)
-                tab.text = getString(R.string.pager_my_tab)
-            else tab.text = getString(R.string.pager_users_tab)
-        }.attach()
+        if (savedInstanceState == null) {
+            childFragmentManager.beginTransaction().apply {
+                add(
+                    R.id.fragment_view_activity,
+                    getFragment(),
+                    RecyclerViewFragment.tag
+                )
+                commit()
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getFragment() : Fragment {
+        return childFragmentManager.findFragmentByTag(RecyclerViewFragment.tag)
+            ?: RecyclerViewFragment.newInstance()
     }
 }
