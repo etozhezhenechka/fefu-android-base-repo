@@ -31,4 +31,9 @@
 
     <string name="pager_my_tab">Мои</string>
     <string name="pager_users_tab">Пользователей</string>
+
+    <string name="comment_hint_myactivity">Комментарий</string>
+
+    <string name="menu_details_remove">Удалить</string>
+    <string name="menu_details_share">Поделиться</string>
 </resources>

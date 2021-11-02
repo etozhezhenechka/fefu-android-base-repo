@@ -2,6 +2,7 @@ package ru.fefu.activitytracker.tracker
 
 import androidx.fragment.app.FragmentManager
 import ru.fefu.activitytracker.R
+import ru.fefu.activitytracker.tracker.fragment.MetaFragment
 
 
 class NavbarHandler(private val fragments: List<MetaFragment>, private val fragmentManager: FragmentManager) {
