@@ -14,30 +14,8 @@
 
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back_activity"
-        app:title="Велосипед">
-
-        <ImageButton
-            android:id="@+id/share_activity_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-
-            android:background="@null"
-            android:padding="20dp"
-
-            android:src="@drawable/ic_share_activity" />
-
-        <ImageButton
-            android:id="@+id/remove_activity_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-
-            android:background="@null"
-            android:padding="20dp"
-
-            android:src="@drawable/ic_remove_activity" />
-    </androidx.appcompat.widget.Toolbar>
+        app:title="Велосипед"
+        app:menu="@menu/details_toolbar_items"/>
 
     <View
         android:id="@+id/users_toolbar_divider"

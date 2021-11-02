@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_toolbar_remove"
+        android:title="@string/menu_details_remove"
+        android:icon="@drawable/ic_remove_activity"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_toolbar_share"
+        android:title="@string/menu_details_share"
+        android:icon="@drawable/ic_share_activity"
+        app:showAsAction="ifRoom" />
+</menu>
