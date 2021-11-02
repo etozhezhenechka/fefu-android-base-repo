@@ -49,12 +49,11 @@ class UsersActivityAdapter(private val items: List<CardItemModel>,
                     }
                     else {
                         add(
-                            R.id.fragment_view_tracker,
+                            R.id.fragment_view_activity,
                             getFragment(),
                             UsersActivityDetailsFragment.tag
                         )
                     }
-                    addToBackStack(UsersActivityDetailsFragment.tag)
                     commit()
                 }
             }

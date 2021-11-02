@@ -45,7 +45,7 @@ class UsersActivityFragment : Fragment(R.layout.fragment_users_activity) {
 
         fillList()
 
-        recycleView.adapter = activity?.let { UsersActivityAdapter(items, it.supportFragmentManager) }
+        recycleView.adapter = parentFragment?.let { UsersActivityAdapter(items, it.parentFragmentManager) }
     }
 
     override fun onDestroyView() {
