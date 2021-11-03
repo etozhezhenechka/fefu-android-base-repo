@@ -43,17 +43,14 @@ class UsersActivityAdapter(private val items: List<CardItemModel>,
                 fragmentManager.beginTransaction().apply {
                     if (activeFragment != null) hide(activeFragment)
 
-                    val hiddenFragment = fragmentManager.findFragmentByTag(UsersActivityDetailsFragment.tag)
-                    if (hiddenFragment != null) {
-                        show(hiddenFragment)
-                    }
-                    else {
-                        add(
-                            R.id.fragment_view_activity,
-                            getFragment(),
-                            UsersActivityDetailsFragment.tag
-                        )
-                    }
+                    add(
+                        R.id.fragment_view_activity,
+                        UsersActivityDetailsFragment.newInstance(),
+                        UsersActivityDetailsFragment.tag
+                    )
+
+                    addToBackStack(UsersActivityDetailsFragment.tag)
+
                     commit()
                 }
             }
@@ -66,10 +63,5 @@ class UsersActivityAdapter(private val items: List<CardItemModel>,
             DateLabelModel::class -> 1
             else -> -1
         }
-    }
-
-    private fun getFragment() : Fragment {
-        return fragmentManager.findFragmentByTag(UsersActivityDetailsFragment.tag)
-            ?: UsersActivityDetailsFragment.newInstance()
     }
 }

@@ -35,17 +35,7 @@ class MyActivityDetailsFragment : Fragment(R.layout.fragment_my_activity_details
         super.onViewCreated(view, savedInstanceState)
 
         binding.myActivityToolbar.setNavigationOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                val activeFragment = parentFragmentManager.findFragmentByTag(MyActivityDetailsFragment.tag)
-                if (activeFragment != null) {
-                    hide(activeFragment)
-                }
-                val hiddenFragment = parentFragmentManager.findFragmentByTag(RecyclerViewFragment.tag)
-                if (hiddenFragment != null) {
-                    show(hiddenFragment)
-                }
-                commit()
-            }
+            parentFragmentManager.popBackStack()
         }
     }
 

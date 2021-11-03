@@ -52,17 +52,14 @@ open class MyActivityAdapter(private val items: List<CardItemModel>,
                 fragmentManager.beginTransaction().apply {
                     if (activeFragment != null) hide(activeFragment)
 
-                    val hiddenFragment = fragmentManager.findFragmentByTag(MyActivityDetailsFragment.tag)
-                    if (hiddenFragment != null) {
-                        show(hiddenFragment)
-                    }
-                    else {
-                        add(
-                            R.id.fragment_view_activity,
-                            getFragment(),
-                            MyActivityDetailsFragment.tag
-                        )
-                    }
+                    add(
+                        R.id.fragment_view_activity,
+                        MyActivityDetailsFragment.newInstance(),
+                        MyActivityDetailsFragment.tag
+                    )
+
+                    addToBackStack(MyActivityDetailsFragment.tag)
+
                     commit()
                 }
             }
@@ -71,10 +68,5 @@ open class MyActivityAdapter(private val items: List<CardItemModel>,
 
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    private fun getFragment() : Fragment {
-        return fragmentManager.findFragmentByTag(MyActivityDetailsFragment.tag)
-            ?: MyActivityDetailsFragment.newInstance()
     }
 }
