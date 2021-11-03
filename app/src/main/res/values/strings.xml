@@ -36,4 +36,10 @@
 
     <string name="menu_details_remove">Удалить</string>
     <string name="menu_details_share">Поделиться</string>
+
+    <string name="user_profile_save">Сохранить</string>
+    <string name="login_hint_profile">Логин</string>
+    <string name="nickname_hint_profile">Имя или никнейм</string>
+    <string name="change_password_profile">Изменить пароль</string>
+    <string name="exit_btn_profile">Выйти</string>
 </resources>
