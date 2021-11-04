@@ -31,6 +31,27 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.changePasswordProfileBtn.setOnClickListener {
+            val activeFragment = parentFragmentManager.fragments.firstOrNull { !it.isHidden }
+
+            parentFragmentManager.beginTransaction().apply {
+                if (activeFragment != null) {
+                    hide(activeFragment)
+                }
+                add(
+                    R.id.fragment_view_profile,
+                    ChangePasswordFragment.newInstance(),
+                    ChangePasswordFragment.tag
+                )
+                addToBackStack(ChangePasswordFragment.tag)
+                commit()
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

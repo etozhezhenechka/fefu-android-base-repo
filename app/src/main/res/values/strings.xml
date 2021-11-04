@@ -42,4 +42,9 @@
     <string name="nickname_hint_profile">Имя или никнейм</string>
     <string name="change_password_profile">Изменить пароль</string>
     <string name="exit_btn_profile">Выйти</string>
+
+    <string name="old_password_change_hint">Старый пароль</string>
+    <string name="new_password_change_hint">Новый пароль</string>
+    <string name="repeat_password_change_hint">Повторите пароль</string>
+    <string name="apply_change_hint">Принять</string>
 </resources>
