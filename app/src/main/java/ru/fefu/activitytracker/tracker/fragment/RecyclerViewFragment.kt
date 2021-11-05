@@ -1,5 +1,6 @@
 package ru.fefu.activitytracker.tracker.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentRecyclerViewBinding
+import ru.fefu.activitytracker.newactivity.NewActivityActivity
 import ru.fefu.activitytracker.tracker.adapter.ViewPagerAdapter
 
 class RecyclerViewFragment : Fragment(R.layout.fragment_recycler_view) {
@@ -41,6 +43,11 @@ class RecyclerViewFragment : Fragment(R.layout.fragment_recycler_view) {
                 tab.text = getString(R.string.pager_my_tab)
             else tab.text = getString(R.string.pager_users_tab)
         }.attach()
+
+        binding.addActivityBtn.setOnClickListener {
+            val intent = Intent(activity, NewActivityActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {

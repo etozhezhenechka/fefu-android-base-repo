@@ -30,6 +30,10 @@
             android:exported="true">
         </activity>
 
+        <activity android:name=".newactivity.NewActivityActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>
