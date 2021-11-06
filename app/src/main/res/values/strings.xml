@@ -47,4 +47,7 @@
     <string name="new_password_change_hint">Новый пароль</string>
     <string name="repeat_password_change_hint">Повторите пароль</string>
     <string name="apply_change_hint">Принять</string>
+
+    <string name="title_start">Погнали? :)</string>
+    <string name="activity_start">Начать</string>
 </resources>
