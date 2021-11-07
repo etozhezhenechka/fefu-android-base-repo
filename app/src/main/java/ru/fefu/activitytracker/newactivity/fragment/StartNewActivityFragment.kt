@@ -1,6 +1,5 @@
 package ru.fefu.activitytracker.newactivity.fragment
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +45,24 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
         fillList()
 
         recycleView.adapter = ActivityTypeAdapter(items)
+
+        binding.activityStartBtn.setOnClickListener {
+            val activeFragment = parentFragmentManager.fragments.firstOrNull { !it.isHidden }
+
+            parentFragmentManager.beginTransaction().apply {
+                if (activeFragment != null) hide(activeFragment)
+
+                add(
+                    R.id.fragment_view_menu_new_activity,
+                    ProgressNewActivityFragment.newInstance(),
+                    ProgressNewActivityFragment.tag
+                )
+
+                addToBackStack(ProgressNewActivityFragment.tag)
+
+                commit()
+            }
+        }
     }
 
     override fun onDestroyView() {
