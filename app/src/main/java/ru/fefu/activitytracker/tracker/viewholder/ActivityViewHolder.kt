@@ -1,16 +1,10 @@
 package ru.fefu.activitytracker.tracker.viewholder
 
-import android.app.Activity
-import android.content.Context
 import android.view.View
 import android.widget.TextView
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.tracker.model.ActivityModel
 import ru.fefu.activitytracker.tracker.model.CardItemModel
-import androidx.appcompat.app.AppCompatActivity
-
-
-
 
 open class ActivityViewHolder(itemView: View) : ItemViewHolder(itemView) {
     var activityProgressTextView: TextView? = null

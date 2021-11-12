@@ -1,4 +1,4 @@
-package ru.fefu.activitytracker.tracker.fragment
+package ru.fefu.activitytracker.newactivity.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.fefu.activitytracker.R
-import ru.fefu.activitytracker.databinding.FragmentMyActivityDetailsBinding
+import ru.fefu.activitytracker.databinding.FragmentProgressNewActivityBinding
 
-class MyActivityDetailsFragment : Fragment(R.layout.fragment_my_activity_details) {
-    private var _binding: FragmentMyActivityDetailsBinding? = null
+class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_activity) {
+    private var _binding: FragmentProgressNewActivityBinding? = null
     private val binding get() = _binding!!
 
     companion object {
-        const val tag = "my_activity_details_fragment"
+        const val tag = "progress_new_activity_fragment"
 
-        fun newInstance() : MyActivityDetailsFragment {
-            val fragment = MyActivityDetailsFragment()
+        fun newInstance() : ProgressNewActivityFragment {
+            val fragment = ProgressNewActivityFragment()
             fragment.arguments = Bundle()
             return fragment
         }
@@ -27,14 +27,14 @@ class MyActivityDetailsFragment : Fragment(R.layout.fragment_my_activity_details
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyActivityDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentProgressNewActivityBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.myActivityToolbar.setNavigationOnClickListener {
+        binding.finishActivityBtn.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }

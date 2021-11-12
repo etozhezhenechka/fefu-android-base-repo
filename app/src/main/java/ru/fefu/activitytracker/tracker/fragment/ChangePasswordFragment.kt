@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.fefu.activitytracker.R
-import ru.fefu.activitytracker.databinding.FragmentMyActivityDetailsBinding
+import ru.fefu.activitytracker.databinding.FragmentChangePasswordBinding
 
-class MyActivityDetailsFragment : Fragment(R.layout.fragment_my_activity_details) {
-    private var _binding: FragmentMyActivityDetailsBinding? = null
+class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
+    private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
 
     companion object {
-        const val tag = "my_activity_details_fragment"
+        const val tag = "change_password_fragment"
 
-        fun newInstance() : MyActivityDetailsFragment {
-            val fragment = MyActivityDetailsFragment()
+        fun newInstance() : ChangePasswordFragment {
+            val fragment = ChangePasswordFragment()
             fragment.arguments = Bundle()
             return fragment
         }
@@ -27,14 +27,14 @@ class MyActivityDetailsFragment : Fragment(R.layout.fragment_my_activity_details
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyActivityDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.myActivityToolbar.setNavigationOnClickListener {
+        binding.changePasswordToolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="230dp">
+
+    <TextView
+        android:id="@+id/title_progress_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+
+        android:text="@string/acitvity_name_progress"
+        android:textColor="#101010"
+        android:textSize="24sp"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@id/distance_progress_activity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+    <TextView
+        android:id="@+id/distance_progress_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/acitvity_distance_progress"
+        android:textColor="#101010"
+        android:textSize="24sp"
+
+        app:layout_constraintEnd_toStartOf="@id/time_progress_activity"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@id/title_progress_activity"
+        app:layout_constraintTop_toBottomOf="@id/title_progress_activity" />
+
+    <TextView
+        android:id="@+id/time_progress_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+
+        android:text="@string/acitvity_time_progress"
+        android:textColor="#101010"
+        android:textSize="24sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/distance_progress_activity"
+        app:layout_constraintTop_toBottomOf="@id/title_progress_activity" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pause_activity_btn"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginHorizontal="8dp"
+
+        android:src="@drawable/ic_pause"
+        app:backgroundTint="#E7DDFF"
+        app:fabCustomSize="56dp"
+        app:maxImageSize="14dp"
+        app:tint="#4B09F3"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/finish_activity_btn"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/finish_activity_btn"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginHorizontal="8dp"
+
+        android:src="@drawable/ic_finish"
+        app:backgroundTint="#4B09F3"
+        app:fabCustomSize="56dp"
+        app:maxImageSize="28dp"
+        app:tint="@color/white"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/pause_activity_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

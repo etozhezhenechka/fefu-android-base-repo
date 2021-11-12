@@ -3,6 +3,7 @@ package ru.fefu.activitytracker
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import ru.fefu.activitytracker.databinding.ActivityWelcomeBinding
 
 class WelcomeActivity : AppCompatActivity(R.layout.activity_welcome) {
@@ -27,5 +28,7 @@ class WelcomeActivity : AppCompatActivity(R.layout.activity_welcome) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 }
