@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentMyActivityBinding
+import ru.fefu.activitytracker.newactivity.model.ActivityType
 import ru.fefu.activitytracker.tracker.adapter.MyActivityAdapter
 import ru.fefu.activitytracker.tracker.model.*
 import java.time.LocalDateTime
@@ -58,14 +59,14 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
                 11.4,
                 LocalDateTime.of(2021, 10, 27, 11, 22),
                 LocalDateTime.of(2021, 10, 27, 12, 40),
-                "Серфинг"
+                ActivityType.SWIMMING
             ),
 
             ActivityInfo(
                 14.8,
                 LocalDateTime.of(2021, 10, 27, 7, 40),
                 LocalDateTime.of(2021, 10, 27, 10, 59),
-                "Велосипед"
+                ActivityType.BIKING
             )
         )
 
