@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
+import ru.fefu.activitytracker.database.Activity
 import ru.fefu.activitytracker.databinding.FragmentMyActivityBinding
 import ru.fefu.activitytracker.newactivity.model.ActivityType
 import ru.fefu.activitytracker.tracker.adapter.MyActivityAdapter
@@ -17,6 +19,7 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     private var _binding: FragmentMyActivityBinding? = null
     private val binding get() = _binding!!
     private lateinit var items: MutableList<CardItemModel>
+    private val hardcodedItemCount = 3
 
     companion object {
         const val tag = "my_activity_fragment"
@@ -46,6 +49,11 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         fillList()
 
         recycleView.adapter = parentFragment?.let { MyActivityAdapter(items, it.parentFragmentManager) }
+
+        App.INSTANCE.db.activityDao().getAll().observe(viewLifecycleOwner) {
+            val adapter = (recycleView.adapter as MyActivityAdapter)
+            addDBItems(adapter, it)
+        }
     }
 
     override fun onDestroyView() {
@@ -76,6 +84,29 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
 
         for (item in activitiesList) {
             items.add(ActivityModel(item))
+        }
+    }
+
+    private fun addDBItems(adapter: MyActivityAdapter, dbList: List<Activity>) {
+        if (dbList.isNotEmpty() && adapter.items.size > hardcodedItemCount) {
+            adapter.items.add(
+                ActivityModel(ActivityInfo(
+                    20.4,
+                    dbList.last().startTime,
+                    dbList.last().endTime,
+                    dbList.last().type
+                ))
+            )
+            adapter.notifyItemInserted(adapter.items.size - 1)
+        }
+
+        if (dbList.isNotEmpty() && adapter.items.size == hardcodedItemCount) {
+            for (item in dbList) {
+                adapter.items.add(
+                    ActivityModel(ActivityInfo(20.4, item.startTime, item.endTime, item.type))
+                )
+                adapter.notifyItemInserted(adapter.items.size - 1)
+            }
         }
     }
 }
