@@ -14,6 +14,7 @@ import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentStartNewActivityBinding
 import ru.fefu.activitytracker.newactivity.adapter.ActivityTypeAdapter
 import ru.fefu.activitytracker.newactivity.model.ActivityTypeModel
+import ru.fefu.activitytracker.newactivity.model.ActivityType
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardDetailsLookup
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardPredicate
 
@@ -75,8 +76,8 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     }
 
     private fun fillList() {
-        items = mutableListOf(ActivityTypeModel("Велосипед"), ActivityTypeModel("Бег"),
-            ActivityTypeModel("Плавание"))
+        items = mutableListOf(ActivityTypeModel(ActivityType.BIKING), ActivityTypeModel(ActivityType.RUNNING),
+            ActivityTypeModel(ActivityType.SWIMMING))
     }
 
     private fun showNewFragment() {
