@@ -1,3 +1,3 @@
 package ru.fefu.activitytracker.tracker.model
 
-interface CardItemModel
+open class CardItemModel(val id: Int)

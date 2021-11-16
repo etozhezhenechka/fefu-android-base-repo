@@ -20,7 +20,7 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     companion object {
         const val tag = "my_activity_fragment"
 
-        fun newInstance() : MyActivityFragment {
+        fun newInstance(): MyActivityFragment {
             val fragment = MyActivityFragment()
             fragment.arguments = Bundle()
             return fragment
@@ -48,7 +48,7 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
 
         App.INSTANCE.db.activityDao().getAll().observe(viewLifecycleOwner) {
             val adapter = (recycleView.adapter as MyActivityAdapter)
-            addDBItems(adapter, it)
+            setDBItems(adapter, it)
         }
     }
 
@@ -57,17 +57,20 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         _binding = null
     }
 
-    private fun addDBItems(adapter: MyActivityAdapter, dbList: List<Activity>) {
-        if ((dbList.size == 1) && (adapter.items.isEmpty())) disableWelcomeViews()
+    private fun setDBItems(adapter: MyActivityAdapter, dbList: List<Activity>) {
+        if (dbList.size == 1 && adapter.items.isEmpty()) disableWelcomeViews()
 
         if (dbList.isNotEmpty() && adapter.items.isNotEmpty()) {
             adapter.items.add(
-                ActivityModel(ActivityInfo(
-                    20.4,
-                    dbList.last().startTime,
-                    dbList.last().endTime,
-                    dbList.last().type
-                ))
+                ActivityModel(
+                    dbList.last().id,
+                    ActivityInfo(
+                        20.4,
+                        dbList.last().startTime,
+                        dbList.last().endTime,
+                        dbList.last().type
+                    )
+                )
             )
             adapter.notifyItemInserted(adapter.items.size - 1)
         }
@@ -77,9 +80,21 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
 
             for (item in dbList) {
                 adapter.items.add(
-                    ActivityModel(ActivityInfo(20.4, item.startTime, item.endTime, item.type))
+                    ActivityModel(
+                        item.id,
+                        ActivityInfo(20.4, item.startTime, item.endTime, item.type)
+                    )
                 )
                 adapter.notifyItemInserted(adapter.items.size - 1)
+            }
+        }
+
+        if (dbList.size < adapter.items.size) {
+            for (item in adapter.items) {
+                val itemInDB = dbList.filter { it.id == item.id }
+
+                if (itemInDB.isNotEmpty()) continue
+                else adapter.items.remove(item)
             }
         }
     }
