@@ -91,10 +91,18 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
 
         if (dbList.size < adapter.items.size) {
             for (item in adapter.items) {
-                val itemInDB = dbList.filter { it.id == item.id }
+                if (item.id != -1) {
+                    val itemInDB = dbList.filter { it.id == item.id }
 
-                if (itemInDB.isNotEmpty()) continue
-                else adapter.items.remove(item)
+                    if (itemInDB.isNotEmpty()) continue
+                    else {
+                        val pos = adapter.items.indexOf(item)
+                        adapter.items.remove(item)
+
+                        adapter.notifyItemRemoved(pos)
+                        adapter.notifyItemRangeChanged(pos, adapter.items.size)
+                    }
+                }
             }
         }
     }
