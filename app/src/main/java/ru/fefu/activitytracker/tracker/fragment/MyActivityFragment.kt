@@ -10,16 +10,12 @@ import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.database.Activity
 import ru.fefu.activitytracker.databinding.FragmentMyActivityBinding
-import ru.fefu.activitytracker.newactivity.model.ActivityType
 import ru.fefu.activitytracker.tracker.adapter.MyActivityAdapter
 import ru.fefu.activitytracker.tracker.model.*
-import java.time.LocalDateTime
 
 class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     private var _binding: FragmentMyActivityBinding? = null
     private val binding get() = _binding!!
-    private lateinit var items: MutableList<CardItemModel>
-    private val hardcodedItemCount = 3
 
     companion object {
         const val tag = "my_activity_fragment"
@@ -46,9 +42,9 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         val recycleView = binding.myActivityRecyclerView
         recycleView.layoutManager = LinearLayoutManager(activity)
 
-        fillList()
-
-        recycleView.adapter = parentFragment?.let { MyActivityAdapter(items, it.parentFragmentManager) }
+        recycleView.adapter = parentFragment?.let {
+            MyActivityAdapter(mutableListOf(), it.parentFragmentManager)
+        }
 
         App.INSTANCE.db.activityDao().getAll().observe(viewLifecycleOwner) {
             val adapter = (recycleView.adapter as MyActivityAdapter)
@@ -61,34 +57,10 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         _binding = null
     }
 
-    private fun fillList() {
-        val activitiesList = listOf(
-            ActivityInfo(
-                11.4,
-                LocalDateTime.of(2021, 10, 27, 11, 22),
-                LocalDateTime.of(2021, 10, 27, 12, 40),
-                ActivityType.SWIMMING
-            ),
-
-            ActivityInfo(
-                14.8,
-                LocalDateTime.of(2021, 10, 27, 7, 40),
-                LocalDateTime.of(2021, 10, 27, 10, 59),
-                ActivityType.BIKING
-            )
-        )
-
-        items = mutableListOf(
-            DateLabelModel(FormattedDate(27, 10, 2021).toString())
-        )
-
-        for (item in activitiesList) {
-            items.add(ActivityModel(item))
-        }
-    }
-
     private fun addDBItems(adapter: MyActivityAdapter, dbList: List<Activity>) {
-        if (dbList.isNotEmpty() && adapter.items.size > hardcodedItemCount) {
+        if ((dbList.size == 1) && (adapter.items.isEmpty())) disableWelcomeViews()
+
+        if (dbList.isNotEmpty() && adapter.items.isNotEmpty()) {
             adapter.items.add(
                 ActivityModel(ActivityInfo(
                     20.4,
@@ -100,7 +72,9 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
             adapter.notifyItemInserted(adapter.items.size - 1)
         }
 
-        if (dbList.isNotEmpty() && adapter.items.size == hardcodedItemCount) {
+        if (dbList.isNotEmpty() && adapter.items.isEmpty()) {
+            disableWelcomeViews()
+
             for (item in dbList) {
                 adapter.items.add(
                     ActivityModel(ActivityInfo(20.4, item.startTime, item.endTime, item.type))
@@ -108,5 +82,10 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
                 adapter.notifyItemInserted(adapter.items.size - 1)
             }
         }
+    }
+
+    private fun disableWelcomeViews() {
+        binding.welcomeText.visibility = View.GONE
+        binding.welcomeSubText.visibility = View.GONE
     }
 }
