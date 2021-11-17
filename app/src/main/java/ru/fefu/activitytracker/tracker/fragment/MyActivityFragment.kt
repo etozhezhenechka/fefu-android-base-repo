@@ -17,7 +17,6 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     private var _binding: FragmentMyActivityBinding? = null
     private val binding get() = _binding!!
     private val dateHandler = DateActivityHandler()
-    private val dateLabelItemId = -1
 
     companion object {
         const val tag = "my_activity_fragment"
@@ -60,41 +59,13 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     }
 
     private fun setDBItems(adapter: MyActivityAdapter, dbList: List<Activity>) {
-        if (dbList.size == 1 && adapter.items.isEmpty()) disableWelcomeViews()
+        if (dbList.isEmpty()) enableWelcomeViews()
+        else disableWelcomeViews()
 
-        if (dbList.isNotEmpty() && adapter.items.isNotEmpty()) {
-            dateHandler.addItem(dbList.last())
-            adapter.items = dateHandler.getModelList()
+        for (item in dbList) dateHandler.addItem(item)
 
-            adapter.notifyDataSetChanged()
-        }
-
-        if (dbList.isNotEmpty() && adapter.items.isEmpty()) {
-            disableWelcomeViews()
-
-            for (item in dbList) dateHandler.addItem(item)
-            adapter.items = dateHandler.getModelList()
-
-            adapter.notifyDataSetChanged()
-        }
-
-        if (dbList.size < dateHandler.activityItemCount) {
-            for (item in adapter.items) {
-                if (item.id != dateLabelItemId) {
-                    val itemInDB = dbList.filter { it.id == item.id }
-
-                    if (itemInDB.isNotEmpty()) continue
-                    else {
-                        dateHandler.removeItem(itemInDB.first())
-                        adapter.items = dateHandler.getModelList()
-
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-            }
-
-            if (dateHandler.activityItemCount == 0) enableWelcomeViews()
-        }
+        adapter.items = dateHandler.getCardList()
+        adapter.notifyDataSetChanged()
     }
 
     private fun disableWelcomeViews() {

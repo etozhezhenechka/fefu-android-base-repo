@@ -5,7 +5,6 @@ import java.time.LocalDate
 
 class DateActivityHandler {
     private var dateMap: MutableMap<LocalDate, MutableList<Activity>> = mutableMapOf()
-    var activityItemCount: Int = 0
 
     fun addItem(activity: Activity) {
         val localDate = activity.startTime.toLocalDate()
@@ -16,28 +15,15 @@ class DateActivityHandler {
         sortDateMap()
     }
 
-    fun removeItem(activity: Activity) {
-        val localDate = activity.startTime.toLocalDate()
-
-        if (!dateMap.containsKey(localDate)) return
-        else {
-            dateMap[localDate]?.remove(activity)
-            if (dateMap[localDate]?.isEmpty() == true) {
-                dateMap.remove(localDate)
-            }
-        }
-    }
-
-    fun getModelList(): MutableList<CardItemModel> {
+    fun getCardList(): MutableList<CardItemModel> {
         return if (dateMap.isEmpty()) mutableListOf()
         else {
-            makeActivitiesList()
+            generateCardList()
         }
     }
 
-    private fun makeActivitiesList(): MutableList<CardItemModel> {
+    private fun generateCardList(): MutableList<CardItemModel> {
         val resultList = mutableListOf<CardItemModel>()
-        activityItemCount = 0
 
         for ((key, value) in dateMap) {
             resultList.add(
@@ -51,14 +37,13 @@ class DateActivityHandler {
             for (item in value) {
                 resultList.add(
                     ActivityModel(
-                        item.id,
                         ActivityInfo(14.8, item.startTime, item.endTime, item.type)
                     )
                 )
-                ++activityItemCount
             }
         }
 
+        dateMap = mutableMapOf()
         return resultList
     }
 

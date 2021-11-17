@@ -1,6 +1,6 @@
 package ru.fefu.activitytracker.tracker.model
 
-open class ActivityModel(id: Int, activityInfo: ActivityInfo) : CardItemModel(id) {
+open class ActivityModel(activityInfo: ActivityInfo) : CardItemModel {
     val activityProgress = activityInfo.getDistance()
     val timeProgress = activityInfo.getDuration()
     val activityType = activityInfo.getType()

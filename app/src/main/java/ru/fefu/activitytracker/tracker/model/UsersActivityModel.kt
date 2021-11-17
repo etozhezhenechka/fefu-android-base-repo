@@ -1,5 +1,5 @@
 package ru.fefu.activitytracker.tracker.model
 
-class UsersActivityModel(id: Int,activityInfo: ActivityInfo) : ActivityModel(id, activityInfo) {
+class UsersActivityModel(activityInfo: ActivityInfo) : ActivityModel(activityInfo) {
     val user = activityInfo.getUsername()
 }
