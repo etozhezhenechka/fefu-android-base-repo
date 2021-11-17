@@ -16,6 +16,8 @@ import ru.fefu.activitytracker.tracker.model.*
 class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     private var _binding: FragmentMyActivityBinding? = null
     private val binding get() = _binding!!
+    private val dateHandler = DateActivityHandler()
+    private val dateLabelItemId = -1
 
     companion object {
         const val tag = "my_activity_fragment"
@@ -61,54 +63,47 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         if (dbList.size == 1 && adapter.items.isEmpty()) disableWelcomeViews()
 
         if (dbList.isNotEmpty() && adapter.items.isNotEmpty()) {
-            adapter.items.add(
-                ActivityModel(
-                    dbList.last().id,
-                    ActivityInfo(
-                        20.4,
-                        dbList.last().startTime,
-                        dbList.last().endTime,
-                        dbList.last().type
-                    )
-                )
-            )
-            adapter.notifyItemInserted(adapter.items.size - 1)
+            dateHandler.addItem(dbList.last())
+            adapter.items = dateHandler.getModelList()
+
+            adapter.notifyDataSetChanged()
         }
 
         if (dbList.isNotEmpty() && adapter.items.isEmpty()) {
             disableWelcomeViews()
 
-            for (item in dbList) {
-                adapter.items.add(
-                    ActivityModel(
-                        item.id,
-                        ActivityInfo(20.4, item.startTime, item.endTime, item.type)
-                    )
-                )
-                adapter.notifyItemInserted(adapter.items.size - 1)
-            }
+            for (item in dbList) dateHandler.addItem(item)
+            adapter.items = dateHandler.getModelList()
+
+            adapter.notifyDataSetChanged()
         }
 
-        if (dbList.size < adapter.items.size) {
+        if (dbList.size < dateHandler.activityItemCount) {
             for (item in adapter.items) {
-                if (item.id != -1) {
+                if (item.id != dateLabelItemId) {
                     val itemInDB = dbList.filter { it.id == item.id }
 
                     if (itemInDB.isNotEmpty()) continue
                     else {
-                        val pos = adapter.items.indexOf(item)
-                        adapter.items.remove(item)
+                        dateHandler.removeItem(itemInDB.first())
+                        adapter.items = dateHandler.getModelList()
 
-                        adapter.notifyItemRemoved(pos)
-                        adapter.notifyItemRangeChanged(pos, adapter.items.size)
+                        adapter.notifyDataSetChanged()
                     }
                 }
             }
+
+            if (dateHandler.activityItemCount == 0) enableWelcomeViews()
         }
     }
 
     private fun disableWelcomeViews() {
         binding.welcomeText.visibility = View.GONE
         binding.welcomeSubText.visibility = View.GONE
+    }
+
+    private fun enableWelcomeViews() {
+        binding.welcomeText.visibility = View.VISIBLE
+        binding.welcomeSubText.visibility = View.VISIBLE
     }
 }

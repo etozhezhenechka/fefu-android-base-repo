@@ -14,7 +14,7 @@ import ru.fefu.activitytracker.tracker.viewholder.DateLabelViewHolder
 import ru.fefu.activitytracker.tracker.viewholder.ItemViewHolder
 
 open class MyActivityAdapter(
-    val items: MutableList<CardItemModel>,
+    var items: MutableList<CardItemModel>,
     private val fragmentManager: FragmentManager
 ) : RecyclerView.Adapter<ItemViewHolder>() {
 
