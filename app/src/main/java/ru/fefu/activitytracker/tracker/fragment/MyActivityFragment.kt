@@ -44,7 +44,7 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         recycleView.layoutManager = LinearLayoutManager(activity)
 
         recycleView.adapter = parentFragment?.let {
-            MyActivityAdapter(mutableListOf(), it.parentFragmentManager)
+            MyActivityAdapter(it.parentFragmentManager)
         }
 
         App.INSTANCE.db.activityDao().getAll().observe(viewLifecycleOwner) {
@@ -64,8 +64,7 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
 
         for (item in dbList) dateHandler.addItem(item)
 
-        adapter.items = dateHandler.getCardList()
-        adapter.notifyDataSetChanged()
+        adapter.submitList(dateHandler.getCardList())
     }
 
     private fun disableWelcomeViews() {

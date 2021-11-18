@@ -40,7 +40,7 @@ class UsersActivityFragment : Fragment(R.layout.fragment_users_activity) {
         recycleView.layoutManager = LinearLayoutManager(activity)
 
         recycleView.adapter = parentFragment?.let {
-            UsersActivityAdapter(mutableListOf(), it.parentFragmentManager)
+            UsersActivityAdapter(it.parentFragmentManager)
         }
     }
 
