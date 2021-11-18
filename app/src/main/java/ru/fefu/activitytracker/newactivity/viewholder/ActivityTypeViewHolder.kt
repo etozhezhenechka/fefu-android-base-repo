@@ -26,6 +26,6 @@ class ActivityTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             cardView.strokeColor = Color.parseColor("#E0E0E0")
             cardView.strokeWidth = 1.px
         }
-        activityTypeTextView?.text = typeModel.type
+        activityTypeTextView?.text = typeModel.typeStr
     }
 }

@@ -6,21 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
+import ru.fefu.activitytracker.database.Activity
 import ru.fefu.activitytracker.databinding.FragmentMyActivityBinding
 import ru.fefu.activitytracker.tracker.adapter.MyActivityAdapter
 import ru.fefu.activitytracker.tracker.model.*
-import java.time.LocalDateTime
 
 class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
     private var _binding: FragmentMyActivityBinding? = null
     private val binding get() = _binding!!
-    private lateinit var items: MutableList<CardItemModel>
+    private val dateHandler = DateActivityHandler()
 
     companion object {
         const val tag = "my_activity_fragment"
 
-        fun newInstance() : MyActivityFragment {
+        fun newInstance(): MyActivityFragment {
             val fragment = MyActivityFragment()
             fragment.arguments = Bundle()
             return fragment
@@ -42,9 +43,14 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         val recycleView = binding.myActivityRecyclerView
         recycleView.layoutManager = LinearLayoutManager(activity)
 
-        fillList()
+        recycleView.adapter = parentFragment?.let {
+            MyActivityAdapter(mutableListOf(), it.parentFragmentManager)
+        }
 
-        recycleView.adapter = parentFragment?.let { MyActivityAdapter(items, it.parentFragmentManager) }
+        App.INSTANCE.db.activityDao().getAll().observe(viewLifecycleOwner) {
+            val adapter = (recycleView.adapter as MyActivityAdapter)
+            setDBItems(adapter, it)
+        }
     }
 
     override fun onDestroyView() {
@@ -52,29 +58,23 @@ class MyActivityFragment : Fragment(R.layout.fragment_my_activity) {
         _binding = null
     }
 
-    private fun fillList() {
-        val activitiesList = listOf(
-            ActivityInfo(
-                11.4,
-                LocalDateTime.of(2021, 10, 27, 11, 22),
-                LocalDateTime.of(2021, 10, 27, 12, 40),
-                "Серфинг"
-            ),
+    private fun setDBItems(adapter: MyActivityAdapter, dbList: List<Activity>) {
+        if (dbList.isEmpty()) enableWelcomeViews()
+        else disableWelcomeViews()
 
-            ActivityInfo(
-                14.8,
-                LocalDateTime.of(2021, 10, 27, 7, 40),
-                LocalDateTime.of(2021, 10, 27, 10, 59),
-                "Велосипед"
-            )
-        )
+        for (item in dbList) dateHandler.addItem(item)
 
-        items = mutableListOf(
-            DateLabelModel(FormattedDate(27, 10, 2021).toString())
-        )
+        adapter.items = dateHandler.getCardList()
+        adapter.notifyDataSetChanged()
+    }
 
-        for (item in activitiesList) {
-            items.add(ActivityModel(item))
-        }
+    private fun disableWelcomeViews() {
+        binding.welcomeText.visibility = View.GONE
+        binding.welcomeSubText.visibility = View.GONE
+    }
+
+    private fun enableWelcomeViews() {
+        binding.welcomeText.visibility = View.VISIBLE
+        binding.welcomeSubText.visibility = View.VISIBLE
     }
 }

@@ -10,12 +10,16 @@ import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
+import ru.fefu.activitytracker.database.Activity
 import ru.fefu.activitytracker.databinding.FragmentStartNewActivityBinding
 import ru.fefu.activitytracker.newactivity.adapter.ActivityTypeAdapter
 import ru.fefu.activitytracker.newactivity.model.ActivityTypeModel
+import ru.fefu.activitytracker.newactivity.model.ActivityType
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardDetailsLookup
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardPredicate
+import java.time.LocalDateTime
 
 class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) {
     private var _binding: FragmentStartNewActivityBinding? = null
@@ -60,11 +64,22 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(CardPredicate()).build()
 
-        selectionTracker.select(0)
+        selectionTracker.select(ActivityType.BIKING.ordinal.toLong())
 
         (recycleView.adapter as ActivityTypeAdapter).tracker = selectionTracker
 
         binding.activityStartBtn.setOnClickListener {
+
+            App.INSTANCE.db.activityDao().insert(
+                Activity(
+                    0,
+                    ActivityType.values()[selectionTracker.selection.first().toInt()],
+                    LocalDateTime.of(2021, 1, 24, 12, 20),
+                    LocalDateTime.of(2021, 1, 24, 13, 41),
+                    listOf(Pair(1.0, 1.1), Pair(1.1, 1.0))
+                )
+            )
+
             showNewFragment()
         }
     }
@@ -75,8 +90,8 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     }
 
     private fun fillList() {
-        items = mutableListOf(ActivityTypeModel("Велосипед"), ActivityTypeModel("Бег"),
-            ActivityTypeModel("Плавание"))
+        items = mutableListOf(ActivityTypeModel(ActivityType.BIKING), ActivityTypeModel(ActivityType.RUNNING),
+            ActivityTypeModel(ActivityType.SWIMMING))
     }
 
     private fun showNewFragment() {

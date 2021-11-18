@@ -1,10 +1,11 @@
 package ru.fefu.activitytracker.tracker.model
 
+import ru.fefu.activitytracker.newactivity.model.ActivityType
 import java.time.Duration
 import java.time.LocalDateTime
 
 class ActivityInfo(private val distance: Double, private val startTime: LocalDateTime,
-                   private val endTime: LocalDateTime, private val type: String,
+                   private val endTime: LocalDateTime, private val type: ActivityType,
                    private val username: String = "") {
 
     private fun getDurationString(duration: Duration, hoursOnly: Boolean = false): String {
@@ -29,7 +30,11 @@ class ActivityInfo(private val distance: Double, private val startTime: LocalDat
         return "${getDurationString(offset, true)} назад"
     }
 
-    fun getType(): String = type
+    fun getType(): String = when (type) {
+        ActivityType.BIKING -> "Велосипед"
+        ActivityType.RUNNING -> "Бег"
+        ActivityType.SWIMMING -> "Плавание"
+    }
 
     fun getUsername(): String = username
 }

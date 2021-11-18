@@ -2,7 +2,6 @@ package ru.fefu.activitytracker.tracker.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.fefu.activitytracker.R
@@ -14,8 +13,9 @@ import ru.fefu.activitytracker.tracker.viewholder.ActivityViewHolder
 import ru.fefu.activitytracker.tracker.viewholder.DateLabelViewHolder
 import ru.fefu.activitytracker.tracker.viewholder.ItemViewHolder
 
-open class MyActivityAdapter(private val items: List<CardItemModel>,
-                             private val fragmentManager: FragmentManager
+open class MyActivityAdapter(
+    var items: MutableList<CardItemModel>,
+    private val fragmentManager: FragmentManager
 ) : RecyclerView.Adapter<ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
