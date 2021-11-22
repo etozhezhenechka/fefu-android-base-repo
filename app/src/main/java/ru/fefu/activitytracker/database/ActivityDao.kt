@@ -1,10 +1,7 @@
 package ru.fefu.activitytracker.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface ActivityDao {
@@ -19,6 +16,12 @@ interface ActivityDao {
 
     @Insert
     fun insertAll(vararg activity: Activity)
+
+    @Update
+    fun update(activity: Activity)
+
+    @Update
+    fun updateAll(vararg activity: Activity)
 
     @Delete
     fun delete(activity: Activity)
