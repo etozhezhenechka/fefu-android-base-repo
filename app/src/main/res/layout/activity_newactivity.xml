@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    
-    <View
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:background="#E5E5E5"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -19,6 +18,7 @@
         android:id="@+id/new_activity_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="2dp"
 
         android:background="@null"
 
@@ -31,6 +31,7 @@
         android:id="@+id/fragment_view_menu_new_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="2dp"
 
         android:background="@drawable/background_new_activity_menu"
 
