@@ -19,6 +19,7 @@ import ru.fefu.activitytracker.newactivity.model.ActivityTypeModel
 import ru.fefu.activitytracker.newactivity.model.ActivityType
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardDetailsLookup
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardPredicate
+import ru.fefu.activitytracker.newactivity.service.ActivityForegroundService
 import java.time.LocalDateTime
 
 class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) {
@@ -29,7 +30,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     companion object {
         const val tag = "start_new_activity_fragment"
 
-        fun newInstance() : StartNewActivityFragment {
+        fun newInstance(): StartNewActivityFragment {
             val fragment = StartNewActivityFragment()
             fragment.arguments = Bundle()
             return fragment
@@ -69,6 +70,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
         (recycleView.adapter as ActivityTypeAdapter).tracker = selectionTracker
 
         binding.activityStartBtn.setOnClickListener {
+            ActivityForegroundService.startForeground(requireContext(), 111)
 
             App.INSTANCE.db.activityDao().insert(
                 Activity(
@@ -90,8 +92,10 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     }
 
     private fun fillList() {
-        items = mutableListOf(ActivityTypeModel(ActivityType.BIKING), ActivityTypeModel(ActivityType.RUNNING),
-            ActivityTypeModel(ActivityType.SWIMMING))
+        items = mutableListOf(
+            ActivityTypeModel(ActivityType.BIKING), ActivityTypeModel(ActivityType.RUNNING),
+            ActivityTypeModel(ActivityType.SWIMMING)
+        )
     }
 
     private fun showNewFragment() {
