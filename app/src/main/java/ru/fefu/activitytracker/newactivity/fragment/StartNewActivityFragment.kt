@@ -10,6 +10,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,6 +19,8 @@ import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.BuildConfig
 import ru.fefu.activitytracker.R
@@ -52,6 +55,8 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
         }
 
     companion object {
+        private const val REQUEST_CODE_RESOLVE_GOOGLE_API_ERROR = 1337
+
         const val tag = "start_new_activity_fragment"
 
         fun newInstance(): StartNewActivityFragment {
@@ -96,7 +101,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
         binding.activityStartBtn.setOnClickListener {
             requestPermission()
 
-            if (locationPermissionGranted) {
+            if (locationPermissionGranted && checkGoogleServicesAvailable()) {
                 initProgressActivity(selectionTracker)
                 showNewFragment()
             }
@@ -189,5 +194,23 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
             }
             .setNegativeButton("Отмена") { _, _ -> }
             .show()
+    }
+
+    private fun checkGoogleServicesAvailable(): Boolean {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val result = googleApiAvailability.isGooglePlayServicesAvailable(requireContext())
+
+        if (result == ConnectionResult.SUCCESS) return true
+
+        if (googleApiAvailability.isUserResolvableError(result)) {
+            googleApiAvailability.getErrorDialog(
+                this,
+                result,
+                REQUEST_CODE_RESOLVE_GOOGLE_API_ERROR
+            )?.show()
+        } else {
+            Toast.makeText(requireContext(), "Google сервисы недоступны", Toast.LENGTH_SHORT).show()
+        }
+        return false
     }
 }
