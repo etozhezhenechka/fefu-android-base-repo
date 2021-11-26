@@ -31,7 +31,7 @@ import ru.fefu.activitytracker.newactivity.model.ActivityTypeModel
 import ru.fefu.activitytracker.newactivity.model.ActivityType
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardDetailsLookup
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardPredicate
-import ru.fefu.activitytracker.newactivity.service.ActivityForegroundService
+import ru.fefu.activitytracker.newactivity.service.ActivityLocationService
 import java.time.LocalDateTime
 
 class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) {
@@ -139,7 +139,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     }
 
     private fun initProgressActivity(selectionTracker: SelectionTracker<Long>) {
-        ActivityForegroundService.startForeground(requireContext(), 111)
+        ActivityLocationService.startForeground(requireContext(), 111)
 
         App.INSTANCE.db.activityDao().insert(
             Activity(

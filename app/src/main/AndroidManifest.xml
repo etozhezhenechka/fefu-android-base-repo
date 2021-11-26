@@ -42,7 +42,7 @@
             android:exported="true">
         </activity>
 
-        <service android:name=".newactivity.service.ActivityForegroundService" />
+        <service android:name=".newactivity.service.ActivityLocationService" />
     </application>
 
 </manifest>
