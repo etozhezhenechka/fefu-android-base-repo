@@ -1,11 +1,11 @@
 package ru.fefu.activitytracker.newactivity
 
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.GeoPoint
+import org.osmdroid.util.BoundingBox
 import org.osmdroid.views.CustomZoomButtonsController
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.ActivityNewactivityBinding
@@ -60,9 +60,18 @@ class NewActivityActivity : AppCompatActivity(R.layout.activity_newactivity) {
         binding.map.setMultiTouchControls(true)
         binding.map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-        val mapController = binding.map.controller
-        mapController.setZoom(17.8)
-        val defaultPoint = GeoPoint(43.0301, 131.8872)
-        mapController.setCenter(defaultPoint)
+        binding.map.minZoomLevel = 4.0
+
+        binding.map.post {
+            binding.map.zoomToBoundingBox(
+                BoundingBox(
+                    43.232111,
+                    132.117062,
+                    42.968866,
+                    131.768039
+                ),
+                false
+            )
+        }
     }
 }

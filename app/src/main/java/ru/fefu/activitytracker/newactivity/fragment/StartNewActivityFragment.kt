@@ -21,14 +21,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.BuildConfig
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.database.Activity
 import ru.fefu.activitytracker.databinding.FragmentStartNewActivityBinding
 import ru.fefu.activitytracker.newactivity.adapter.ActivityTypeAdapter
-import ru.fefu.activitytracker.newactivity.model.ActivityTypeModel
 import ru.fefu.activitytracker.newactivity.model.ActivityType
+import ru.fefu.activitytracker.newactivity.model.ActivityTypeModel
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardDetailsLookup
 import ru.fefu.activitytracker.newactivity.selectiontracker.CardPredicate
 import ru.fefu.activitytracker.newactivity.service.ActivityLocationService
@@ -56,6 +59,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
 
     companion object {
         private const val REQUEST_CODE_RESOLVE_GOOGLE_API_ERROR = 1337
+        private const val REQUEST_CODE_RESOLVE_GPS_ERROR = 1338
 
         const val tag = "start_new_activity_fragment"
 
@@ -102,8 +106,23 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
             requestPermission()
 
             if (locationPermissionGranted && checkGoogleServicesAvailable()) {
-                initProgressActivity(selectionTracker)
-                showNewFragment()
+                checkIfGpsEnabled(
+                    {
+                        initProgressActivity(selectionTracker)
+                        showNewFragment()
+                    },
+                    {
+                        if (it is ResolvableApiException) {
+                            it.startResolutionForResult(
+                                requireActivity(),
+                                REQUEST_CODE_RESOLVE_GPS_ERROR
+                            )
+                        } else {
+                            Toast.makeText(requireContext(), "GPS Недоступна", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                )
             }
         }
     }
@@ -139,8 +158,6 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     }
 
     private fun initProgressActivity(selectionTracker: SelectionTracker<Long>) {
-        ActivityLocationService.startForeground(requireContext(), 111)
-
         App.INSTANCE.db.activityDao().insert(
             Activity(
                 0,
@@ -150,6 +167,8 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
                 listOf(Pair(1.0, 1.1), Pair(1.1, 1.0))
             )
         )
+
+        ActivityLocationService.startForeground(requireContext(), 111)
     }
 
     private fun requestPermission() {
@@ -212,5 +231,16 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
             Toast.makeText(requireContext(), "Google сервисы недоступны", Toast.LENGTH_SHORT).show()
         }
         return false
+    }
+
+    private fun checkIfGpsEnabled(success: () -> Unit, error: (Exception) -> Unit) {
+        LocationServices.getSettingsClient(requireContext())
+            .checkLocationSettings(
+                LocationSettingsRequest.Builder()
+                    .addLocationRequest(ActivityLocationService.locationRequest)
+                    .build()
+            )
+            .addOnSuccessListener { success.invoke() }
+            .addOnFailureListener { error.invoke(it) }
     }
 }
