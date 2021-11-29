@@ -26,12 +26,12 @@ class NewActivityActivity : AppCompatActivity(R.layout.activity_newactivity) {
 
     override fun onResume() {
         super.onResume()
-        binding.map.onResume()
+        binding.newActivityMap.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        binding.map.onPause()
+        binding.newActivityMap.onPause()
     }
 
     private fun setupActivity(savedInstanceState: Bundle?) {
@@ -56,14 +56,14 @@ class NewActivityActivity : AppCompatActivity(R.layout.activity_newactivity) {
             applicationContext,
             PreferenceManager.getDefaultSharedPreferences(applicationContext)
         )
-        binding.map.setTileSource(TileSourceFactory.MAPNIK)
-        binding.map.setMultiTouchControls(true)
-        binding.map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        binding.newActivityMap.setTileSource(TileSourceFactory.MAPNIK)
+        binding.newActivityMap.setMultiTouchControls(true)
+        binding.newActivityMap.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-        binding.map.minZoomLevel = 4.0
+        binding.newActivityMap.minZoomLevel = 4.0
 
-        binding.map.post {
-            binding.map.zoomToBoundingBox(
+        binding.newActivityMap.post {
+            binding.newActivityMap.zoomToBoundingBox(
                 BoundingBox(
                     43.232111,
                     132.117062,
