@@ -35,9 +35,13 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
     companion object {
         const val tag = "progress_new_activity_fragment"
 
-        fun newInstance(): ProgressNewActivityFragment {
+        fun newInstance(typeTitle: String): ProgressNewActivityFragment {
             val fragment = ProgressNewActivityFragment()
-            fragment.arguments = Bundle()
+
+            val args = Bundle()
+            args.putString("typeTitle", typeTitle)
+            fragment.arguments = args
+
             return fragment
         }
     }
@@ -54,32 +58,12 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mapView = activity?.findViewById(R.id.new_activity_map)
-        showUserLocation()
+        binding.titleProgressActivity.text = arguments?.getString("typeTitle")
 
-        App.INSTANCE.db.activityDao().getByIdLiveData(ActivityLocationService.activityId)
-            .observe(viewLifecycleOwner) {
-                if (it.coordinateList.isNotEmpty()) {
-                    val lastCoordinate = it.coordinateList.last()
-                    polyline.addPoint(GeoPoint(lastCoordinate.first, lastCoordinate.second))
-                }
-            }
-
-        mapView?.overlayManager?.add(polyline)
+        initLocation()
 
         binding.finishActivityBtn.setOnClickListener {
-            val cancelIntent = Intent(requireContext(), ActivityLocationService::class.java).apply {
-                action = ActivityLocationService.ACTION_CANCEL
-            }
-            requireActivity().startService(cancelIntent)
-
-            mapView?.overlays?.clear()
-            mapView?.invalidate()
-
-            App.INSTANCE.db.activityDao()
-                .updateIsFinishedById(ActivityLocationService.activityId, true)
-
-            parentFragmentManager.popBackStack()
+            finishActivity()
         }
     }
 
@@ -116,5 +100,50 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
         locationOverlay.setPersonHotspot(locationIcon.width / 2f, locationIcon.height.toFloat())
         locationOverlay.enableMyLocation()
         mapView?.overlays?.add(locationOverlay)
+    }
+
+    private fun initLocation() {
+        mapView = activity?.findViewById(R.id.new_activity_map)
+        showUserLocation()
+
+        App.INSTANCE.db.activityDao().getByIdLiveData(ActivityLocationService.activityId)
+            .observe(viewLifecycleOwner) {
+                if (it.coordinateList.isNotEmpty()) {
+                    val lastCoordinate = it.coordinateList.last()
+                    polyline.addPoint(GeoPoint(lastCoordinate.first, lastCoordinate.second))
+
+                    binding.distanceProgressActivity.text = getDistanceText()
+                }
+            }
+
+        mapView?.overlayManager?.add(polyline)
+    }
+
+    private fun getDistanceText(): String {
+        val distance = ActivityLocationService.distance
+
+        return if (distance >= 1000) "%.2f км.".format(distance / 1000)
+        else "%.2f м.".format(distance)
+    }
+
+    private fun finishActivity() {
+        val cancelIntent = Intent(requireContext(), ActivityLocationService::class.java).apply {
+            action = ActivityLocationService.ACTION_CANCEL
+        }
+        requireActivity().startService(cancelIntent)
+
+        mapView?.overlays?.clear()
+        mapView?.invalidate()
+
+        App.INSTANCE.db.activityDao()
+            .updateIsFinishedById(ActivityLocationService.activityId, true)
+
+        App.INSTANCE.db.activityDao()
+            .updateDistanceById(
+                ActivityLocationService.activityId,
+                ActivityLocationService.distance
+            )
+
+        parentFragmentManager.popBackStack()
     }
 }

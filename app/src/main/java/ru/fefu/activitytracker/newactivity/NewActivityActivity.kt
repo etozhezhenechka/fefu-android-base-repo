@@ -1,5 +1,6 @@
 package ru.fefu.activitytracker.newactivity
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
@@ -53,8 +54,8 @@ class NewActivityActivity : AppCompatActivity(R.layout.activity_newactivity) {
 
     private fun initMap() {
         Configuration.getInstance().load(
-            applicationContext,
-            PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            this,
+            getPreferences(Context.MODE_PRIVATE)
         )
         binding.newActivityMap.setTileSource(TileSourceFactory.MAPNIK)
         binding.newActivityMap.setMultiTouchControls(true)

@@ -8,6 +8,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
@@ -29,6 +30,7 @@ class ActivityLocationService : Service() {
         const val ACTION_START = "start"
         const val ACTION_CANCEL = "cancel"
 
+        var distance = 0.0
         var activityId = -1
         val coordinates = mutableListOf<Pair<Double, Double>>()
 
@@ -57,6 +59,10 @@ class ActivityLocationService : Service() {
         super.onStartCommand(intent, flags, startId)
 
         if (intent?.action == ACTION_CANCEL) {
+            App.INSTANCE.db.activityDao().updateIsFinishedById(activityId, true)
+            App.INSTANCE.db.activityDao().updateDistanceById(activityId, distance)
+
+            distance = 0.0
             activityId = -1
             coordinates.clear()
 
@@ -145,7 +151,23 @@ class ActivityLocationService : Service() {
         override fun onLocationResult(result: LocationResult?) {
             val lastLocation = result?.lastLocation ?: return
 
-            coordinates.add(Pair(lastLocation.latitude, lastLocation.longitude))
+            val newCoordinate = Pair(lastLocation.latitude, lastLocation.longitude)
+            coordinates.add(newCoordinate)
+
+            if (coordinates.size > 1) {
+                val newLocation = Location("NewLocation")
+                newLocation.latitude = newCoordinate.first
+                newLocation.longitude = newCoordinate.second
+
+                val oldPair = coordinates[coordinates.lastIndex - 1]
+                val oldCoordinate = Pair(oldPair.first, oldPair.second)
+
+                val oldLocation = Location("OldLocation")
+                oldLocation.latitude = oldCoordinate.first
+                oldLocation.longitude = oldCoordinate.second
+
+                distance += newLocation.distanceTo(oldLocation)
+            }
 
             App.INSTANCE.db.activityDao().updateCoordinatesById(activityId, coordinates)
         }

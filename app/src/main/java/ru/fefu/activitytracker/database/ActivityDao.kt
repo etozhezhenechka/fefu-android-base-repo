@@ -33,6 +33,9 @@ interface ActivityDao {
     @Query("UPDATE activity SET is_finished=:isFinished WHERE id=:id")
     fun updateIsFinishedById(id: Int, isFinished: Boolean)
 
+    @Query("UPDATE activity SET distance=:distance WHERE id=:id")
+    fun updateDistanceById(id: Int, distance: Double)
+
     @Delete
     fun delete(activity: Activity)
 }

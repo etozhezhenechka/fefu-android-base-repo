@@ -1,6 +1,7 @@
 package ru.fefu.activitytracker.tracker.model
 
 import ru.fefu.activitytracker.newactivity.model.ActivityType
+import ru.fefu.activitytracker.newactivity.service.ActivityLocationService
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -16,7 +17,10 @@ class ActivityInfo(private val distance: Double, private val startTime: LocalDat
         else "$hours ч."
     }
 
-    fun getDistance(): String = "$distance км."
+    fun getDistance(): String {
+        return if (distance >= 1000) "%.2f км.".format(distance / 1000)
+        else "%.2f м.".format(distance)
+    }
 
     fun getDuration(): String {
         val duration = Duration.between(endTime, startTime).abs()

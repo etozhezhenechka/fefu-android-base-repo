@@ -42,6 +42,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     private val binding get() = _binding!!
     private lateinit var typeItems: MutableList<ActivityTypeModel>
     private var locationPermissionGranted: Boolean = false
+    private lateinit var selectionTracker: SelectionTracker<Long>
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -92,7 +93,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
 
         recycleView.adapter = typeAdapter
 
-        val selectionTracker = SelectionTracker.Builder(
+        selectionTracker = SelectionTracker.Builder(
             "selection-id", recycleView,
             StableIdKeyProvider(recycleView), CardDetailsLookup(recycleView),
             StorageStrategy.createLongStorage()
@@ -108,7 +109,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
             if (locationPermissionGranted && checkGoogleServicesAvailable()) {
                 checkIfGpsEnabled(
                     {
-                        initProgressActivity(selectionTracker)
+                        initProgressActivity()
                         showNewFragment()
                     },
                     {
@@ -145,9 +146,13 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
         parentFragmentManager.beginTransaction().apply {
             if (activeFragment != null) hide(activeFragment)
 
+            val typeTitle = ActivityTypeModel(
+                ActivityType.values()[selectionTracker.selection.first().toInt()]
+            ).typeStr
+
             add(
                 R.id.fragment_view_menu_new_activity,
-                ProgressNewActivityFragment.newInstance(),
+                ProgressNewActivityFragment.newInstance(typeTitle),
                 ProgressNewActivityFragment.tag
             )
 
@@ -157,11 +162,12 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
         }
     }
 
-    private fun initProgressActivity(selectionTracker: SelectionTracker<Long>) {
+    private fun initProgressActivity() {
         val activityId = App.INSTANCE.db.activityDao().insert(
             Activity(
                 0,
                 ActivityType.values()[selectionTracker.selection.first().toInt()],
+                0.0,
                 LocalDateTime.of(2021, 1, 24, 12, 20),
                 LocalDateTime.of(2021, 1, 24, 13, 41),
                 mutableListOf()
