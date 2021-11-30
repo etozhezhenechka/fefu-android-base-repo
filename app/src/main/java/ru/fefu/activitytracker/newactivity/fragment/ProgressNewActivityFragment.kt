@@ -1,5 +1,6 @@
 package ru.fefu.activitytracker.newactivity.fragment
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
@@ -8,9 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
@@ -60,14 +59,26 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
 
         App.INSTANCE.db.activityDao().getByIdLiveData(ActivityLocationService.activityId)
             .observe(viewLifecycleOwner) {
-            for (point in it.coordinateList) {
-                polyline.addPoint(GeoPoint(point.first, point.second))
+                if (it.coordinateList.isNotEmpty()) {
+                    val lastCoordinate = it.coordinateList.last()
+                    polyline.addPoint(GeoPoint(lastCoordinate.first, lastCoordinate.second))
+                }
             }
-        }
 
         mapView?.overlayManager?.add(polyline)
 
         binding.finishActivityBtn.setOnClickListener {
+            val cancelIntent = Intent(requireContext(), ActivityLocationService::class.java).apply {
+                action = ActivityLocationService.ACTION_CANCEL
+            }
+            requireActivity().startService(cancelIntent)
+
+            mapView?.overlays?.clear()
+            mapView?.invalidate()
+
+            App.INSTANCE.db.activityDao()
+                .updateIsFinishedById(ActivityLocationService.activityId, true)
+
             parentFragmentManager.popBackStack()
         }
     }

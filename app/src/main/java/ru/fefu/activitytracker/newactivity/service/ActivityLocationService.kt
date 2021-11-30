@@ -26,8 +26,8 @@ class ActivityLocationService : Service() {
         private const val CHANNEL_ID = "activity_location_service_id"
         private const val EXTRA_ID = "id"
 
-        private const val ACTION_START = "start"
-        private const val ACTION_CANCEL = "cancel"
+        const val ACTION_START = "start"
+        const val ACTION_CANCEL = "cancel"
 
         var activityId = -1
         val coordinates = mutableListOf<Pair<Double, Double>>()
@@ -57,6 +57,9 @@ class ActivityLocationService : Service() {
         super.onStartCommand(intent, flags, startId)
 
         if (intent?.action == ACTION_CANCEL) {
+            activityId = -1
+            coordinates.clear()
+
             stopLocationUpdates()
             stopForeground(true)
             stopSelf()

@@ -1,11 +1,12 @@
 package ru.fefu.activitytracker.database
 
+import android.content.IntentSender
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface ActivityDao {
-    @Query("SELECT * FROM activity")
+    @Query("SELECT * FROM activity WHERE is_finished=1")
     fun getAll(): LiveData<List<Activity>>
 
     @Query("SELECT * FROM activity WHERE id=:id")
@@ -28,6 +29,9 @@ interface ActivityDao {
 
     @Query("UPDATE activity SET coordinate_list=:coordinateList WHERE id=:id")
     fun updateCoordinatesById(id: Int, coordinateList: List<Pair<Double, Double>>)
+
+    @Query("UPDATE activity SET is_finished=:isFinished WHERE id=:id")
+    fun updateIsFinishedById(id: Int, isFinished: Boolean)
 
     @Delete
     fun delete(activity: Activity)
