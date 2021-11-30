@@ -158,7 +158,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     }
 
     private fun initProgressActivity(selectionTracker: SelectionTracker<Long>) {
-        App.INSTANCE.db.activityDao().insert(
+        val activityId = App.INSTANCE.db.activityDao().insert(
             Activity(
                 0,
                 ActivityType.values()[selectionTracker.selection.first().toInt()],
@@ -168,7 +168,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
             )
         )
 
-        ActivityLocationService.startForeground(requireContext(), 111)
+        ActivityLocationService.startForeground(requireContext(), activityId.toInt())
     }
 
     private fun requestPermission() {

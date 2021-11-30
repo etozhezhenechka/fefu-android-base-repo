@@ -16,6 +16,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.newactivity.NewActivityActivity
 
@@ -28,6 +29,9 @@ class ActivityLocationService : Service() {
         private const val ACTION_START = "start"
         private const val ACTION_CANCEL = "cancel"
 
+        var activityId = -1
+        val coordinates = mutableListOf<Pair<Double, Double>>()
+
         val locationRequest: LocationRequest
             get() = LocationRequest.create()
                 .setInterval(10000L)
@@ -36,7 +40,8 @@ class ActivityLocationService : Service() {
 
         fun startForeground(context: Context, id: Int) {
             val intent = Intent(context, ActivityLocationService::class.java)
-            intent.putExtra(EXTRA_ID, id)
+            activityId = id
+            intent.putExtra(EXTRA_ID, activityId)
             intent.action = ACTION_START
             ContextCompat.startForegroundService(context, intent)
         }
@@ -136,6 +141,10 @@ class ActivityLocationService : Service() {
     inner class ActivityLocationCallback(private val activityId: Int) : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
             val lastLocation = result?.lastLocation ?: return
+
+            coordinates.add(Pair(lastLocation.latitude, lastLocation.longitude))
+
+            App.INSTANCE.db.activityDao().updateCoordinatesById(activityId, coordinates)
         }
     }
 }

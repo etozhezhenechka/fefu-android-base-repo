@@ -6,17 +6,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.MapEventsOverlay
+import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentProgressNewActivityBinding
+import ru.fefu.activitytracker.newactivity.service.ActivityLocationService
 
 class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_activity) {
     private var _binding: FragmentProgressNewActivityBinding? = null
     private val binding get() = _binding!!
     private var mapView: org.osmdroid.views.MapView? = null
+
+    private val polyline by lazy {
+        Polyline().apply {
+            outlinePaint.color = ContextCompat.getColor(
+                requireContext(),
+                R.color.purple_700
+            )
+        }
+    }
 
     companion object {
         const val tag = "progress_new_activity_fragment"
@@ -42,6 +57,15 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
 
         mapView = activity?.findViewById(R.id.new_activity_map)
         showUserLocation()
+
+        App.INSTANCE.db.activityDao().getByIdLiveData(ActivityLocationService.activityId)
+            .observe(viewLifecycleOwner) {
+            for (point in it.coordinateList) {
+                polyline.addPoint(GeoPoint(point.first, point.second))
+            }
+        }
+
+        mapView?.overlayManager?.add(polyline)
 
         binding.finishActivityBtn.setOnClickListener {
             parentFragmentManager.popBackStack()
