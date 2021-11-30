@@ -164,7 +164,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
                 ActivityType.values()[selectionTracker.selection.first().toInt()],
                 LocalDateTime.of(2021, 1, 24, 12, 20),
                 LocalDateTime.of(2021, 1, 24, 13, 41),
-                listOf(Pair(1.0, 1.1), Pair(1.1, 1.0))
+                mutableListOf()
             )
         )
 
