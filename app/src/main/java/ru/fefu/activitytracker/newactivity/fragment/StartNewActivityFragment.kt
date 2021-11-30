@@ -48,6 +48,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) {
                 locationPermissionGranted = true
+                performChecksAndStartService()
             } else {
                 locationPermissionGranted = false
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -105,26 +106,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
 
         binding.activityStartBtn.setOnClickListener {
             requestPermission()
-
-            if (locationPermissionGranted && checkGoogleServicesAvailable()) {
-                checkIfGpsEnabled(
-                    {
-                        initProgressActivity()
-                        showNewFragment()
-                    },
-                    {
-                        if (it is ResolvableApiException) {
-                            it.startResolutionForResult(
-                                requireActivity(),
-                                REQUEST_CODE_RESOLVE_GPS_ERROR
-                            )
-                        } else {
-                            Toast.makeText(requireContext(), "GPS Недоступна", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                )
-            }
+            performChecksAndStartService()
         }
     }
 
@@ -248,5 +230,27 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
             )
             .addOnSuccessListener { success.invoke() }
             .addOnFailureListener { error.invoke(it) }
+    }
+
+    private fun performChecksAndStartService() {
+        if (locationPermissionGranted && checkGoogleServicesAvailable()) {
+            checkIfGpsEnabled(
+                {
+                    initProgressActivity()
+                    showNewFragment()
+                },
+                {
+                    if (it is ResolvableApiException) {
+                        it.startResolutionForResult(
+                            requireActivity(),
+                            REQUEST_CODE_RESOLVE_GPS_ERROR
+                        )
+                    } else {
+                        Toast.makeText(requireContext(), "GPS Недоступна", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            )
+        }
     }
 }
