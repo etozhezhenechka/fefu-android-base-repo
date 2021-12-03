@@ -13,8 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back_activity"
-        app:title="Велосипед">
+        app:navigationIcon="@drawable/ic_back_activity">
     </androidx.appcompat.widget.Toolbar>
 
     <View
@@ -35,7 +34,6 @@
 
         android:textColor="#4B09F3"
         android:textSize="16sp"
-        android:text="\@van_darkholme"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/users_toolbar_divider" />
@@ -47,7 +45,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
 
-        android:text="14.32 км"
         android:textColor="#101010"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -63,7 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
 
-        android:text="14 часов назад"
         android:textColor="#808080"
         android:textSize="16sp"
 
@@ -77,7 +73,6 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
 
-        android:text="1 ч 42 мин"
         android:textColor="#101010"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -93,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
 
-        android:text="Старт"
+        android:text="@string/start_label_myactivity"
         android:textColor="#101010"
         android:textSize="16sp"
 
@@ -107,7 +102,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
 
-        android:text="14:49"
         android:textColor="#808080"
         android:textSize="16sp"
 
@@ -133,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
 
-        android:text="Финиш"
+        android:text="@string/finish_label_myactivity"
         android:textColor="#101010"
         android:textSize="16sp"
 
@@ -146,7 +140,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
 
-        android:text="16:31"
         android:textColor="#808080"
         android:textSize="16sp"
 

@@ -35,6 +35,8 @@
     <string name="welcome_text">Время потренить</string>
     <string name="welcome_sub_text">Нажимай на кнопку ниже и начинаем трекать активность</string>
 
+    <string name="start_label_myactivity">Старт</string>
+    <string name="finish_label_myactivity">Финиш</string>
     <string name="comment_hint_myactivity">Комментарий</string>
 
     <string name="menu_details_remove">Удалить</string>

@@ -25,6 +25,10 @@ class ActivityInfo(
         else "%.2f м.".format(distance)
     }
 
+    fun getStartTime(): String = "${startTime.hour}:${startTime.minute}"
+
+    fun getEndTime(): String = "${endTime.hour}:${endTime.minute}"
+
     fun getDuration(): String {
         val duration = Duration.between(endTime, startTime).abs()
         return getDurationString(duration)

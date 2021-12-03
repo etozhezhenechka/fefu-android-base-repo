@@ -52,7 +52,7 @@ open class MyActivityAdapter(private val fragmentManager: FragmentManager) :
 
                     add(
                         R.id.fragment_view_activity,
-                        MyActivityDetailsFragment.newInstance(),
+                        MyActivityDetailsFragment.newInstance(holder.activityId),
                         MyActivityDetailsFragment.tag
                     )
 

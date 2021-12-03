@@ -11,6 +11,7 @@ open class ActivityViewHolder(itemView: View) : ItemViewHolder(itemView) {
     var timeProgressTextView: TextView? = null
     var activityTypeTextView: TextView? = null
     var activityDateTextView: TextView? = null
+    var activityId = -1
 
     init {
         activityProgressTextView = itemView.findViewById(R.id.activity_progress_caption)
@@ -21,6 +22,8 @@ open class ActivityViewHolder(itemView: View) : ItemViewHolder(itemView) {
 
     override fun bindValues(itemModel: CardItemModel) {
         val activityModel = itemModel as ActivityModel
+        activityId = activityModel.activityId
+
         activityProgressTextView?.text = activityModel.activityProgress
         timeProgressTextView?.text = activityModel.timeProgress
         activityTypeTextView?.text = activityModel.activityType

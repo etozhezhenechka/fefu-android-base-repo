@@ -14,5 +14,6 @@ data class Activity(
     @ColumnInfo(name = "start_time") val startTime: LocalDateTime,
     @ColumnInfo(name = "end_time") val endTime: LocalDateTime,
     @ColumnInfo(name = "coordinate_list") val coordinateList: MutableList<Pair<Double, Double>>,
-    @ColumnInfo(name = "is_finished") val isFinished: Boolean = false
+    @ColumnInfo(name = "is_finished") val isFinished: Boolean = false,
+    @ColumnInfo(name = "username") val username: String = ""
 )

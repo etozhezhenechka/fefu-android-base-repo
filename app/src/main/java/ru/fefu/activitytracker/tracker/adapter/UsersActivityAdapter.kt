@@ -42,7 +42,7 @@ class UsersActivityAdapter(private val fragmentManager: FragmentManager) :
 
                     add(
                         R.id.fragment_view_activity,
-                        UsersActivityDetailsFragment.newInstance(),
+                        UsersActivityDetailsFragment.newInstance(holder.activityId),
                         UsersActivityDetailsFragment.tag
                     )
 
