@@ -37,7 +37,13 @@ class DateActivityHandler {
             for (item in value) {
                 resultList.add(
                     ActivityModel(
-                        ActivityInfo(item.distance, item.startTime, item.endTime, item.type)
+                        ActivityInfo(
+                            item.id,
+                            item.distance,
+                            item.startTime,
+                            item.endTime,
+                            item.type
+                        )
                     )
                 )
             }
