@@ -3,6 +3,7 @@ package ru.fefu.activitytracker.database
 import android.content.IntentSender
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import java.time.LocalDateTime
 
 @Dao
 interface ActivityDao {
@@ -35,6 +36,12 @@ interface ActivityDao {
 
     @Query("UPDATE activity SET distance=:distance WHERE id=:id")
     fun updateDistanceById(id: Int, distance: Double)
+
+    @Query("UPDATE activity SET start_time=:startTime WHERE id=:id")
+    fun updateStartTimeById(id: Int, startTime: LocalDateTime)
+
+    @Query("UPDATE activity SET end_time=:endTime WHERE id=:id")
+    fun updateEndTimeById(id: Int, endTime: LocalDateTime)
 
     @Delete
     fun delete(activity: Activity)

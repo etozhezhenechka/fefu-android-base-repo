@@ -20,6 +20,7 @@ import com.google.android.gms.location.LocationServices
 import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.newactivity.NewActivityActivity
+import java.time.LocalDateTime
 
 class ActivityLocationService : Service() {
 
@@ -61,6 +62,7 @@ class ActivityLocationService : Service() {
         if (intent?.action == ACTION_CANCEL) {
             App.INSTANCE.db.activityDao().updateIsFinishedById(activityId, true)
             App.INSTANCE.db.activityDao().updateDistanceById(activityId, distance)
+            App.INSTANCE.db.activityDao().updateEndTimeById(activityId, LocalDateTime.now())
 
             distance = 0.0
             activityId = -1
@@ -71,6 +73,7 @@ class ActivityLocationService : Service() {
             stopSelf()
             return START_NOT_STICKY
         } else if (intent?.action == ACTION_START) {
+            App.INSTANCE.db.activityDao().updateStartTimeById(startId, LocalDateTime.now())
             startLocationUpdates(intent.getIntExtra(EXTRA_ID, -1))
             return START_REDELIVER_INTENT
         }
