@@ -60,6 +60,8 @@ class ActivityLocationService : Service() {
         super.onStartCommand(intent, flags, startId)
 
         if (intent?.action == ACTION_CANCEL) {
+            activityId = intent.getLongExtra("activityId", activityId.toLong()).toInt()
+
             App.INSTANCE.db.activityDao().updateIsFinishedById(activityId, true)
             App.INSTANCE.db.activityDao().updateDistanceById(activityId, distance)
             App.INSTANCE.db.activityDao().updateEndTimeById(activityId, LocalDateTime.now())

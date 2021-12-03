@@ -35,11 +35,12 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
     companion object {
         const val tag = "progress_new_activity_fragment"
 
-        fun newInstance(typeTitle: String): ProgressNewActivityFragment {
+        fun newInstance(typeTitle: String, activityId: Long): ProgressNewActivityFragment {
             val fragment = ProgressNewActivityFragment()
 
             val args = Bundle()
             args.putString("typeTitle", typeTitle)
+            args.putLong("activityId", activityId)
             fragment.arguments = args
 
             return fragment
@@ -130,6 +131,10 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
         val cancelIntent = Intent(requireContext(), ActivityLocationService::class.java).apply {
             action = ActivityLocationService.ACTION_CANCEL
         }
+
+        val activityId = arguments?.getLong("activityId")
+        cancelIntent.putExtra("activityId", activityId)
+
         requireActivity().startService(cancelIntent)
 
         mapView?.overlays?.clear()

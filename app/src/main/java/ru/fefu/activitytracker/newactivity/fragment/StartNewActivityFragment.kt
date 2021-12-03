@@ -43,6 +43,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     private lateinit var typeItems: MutableList<ActivityTypeModel>
     private var locationPermissionGranted: Boolean = false
     private lateinit var selectionTracker: SelectionTracker<Long>
+    private var activityId = -1L
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -134,7 +135,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
 
             add(
                 R.id.fragment_view_menu_new_activity,
-                ProgressNewActivityFragment.newInstance(typeTitle),
+                ProgressNewActivityFragment.newInstance(typeTitle, activityId),
                 ProgressNewActivityFragment.tag
             )
 
@@ -145,13 +146,13 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
     }
 
     private fun initProgressActivity() {
-        val activityId = App.INSTANCE.db.activityDao().insert(
+        activityId = App.INSTANCE.db.activityDao().insert(
             Activity(
                 0,
                 ActivityType.values()[selectionTracker.selection.first().toInt()],
                 0.0,
-                LocalDateTime.of(2021, 1, 24, 12, 20),
-                LocalDateTime.of(2021, 1, 24, 13, 41),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
                 mutableListOf()
             )
         )
