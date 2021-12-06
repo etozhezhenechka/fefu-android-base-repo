@@ -3,6 +3,7 @@ package ru.fefu.activitytracker.tracker.model
 import ru.fefu.activitytracker.newactivity.model.ActivityType
 import java.time.Duration
 import java.time.LocalDateTime
+import kotlin.math.min
 
 class ActivityInfo(
     private val id: Int, private val distance: Double, private val startTime: LocalDateTime,
@@ -18,6 +19,13 @@ class ActivityInfo(
         else "$hours ч."
     }
 
+    private fun getTimeString(dateTime: LocalDateTime): String {
+        val hourStr = if (dateTime.hour < 9) "0${dateTime.hour}" else "${dateTime.hour}"
+        val minuteStr = if (dateTime.minute < 9) "0${dateTime.minute}" else "${dateTime.minute}"
+
+        return "${hourStr}:${minuteStr}"
+    }
+
     fun getId(): Int = id
 
     fun getDistance(): String {
@@ -25,9 +33,9 @@ class ActivityInfo(
         else "%.2f м.".format(distance)
     }
 
-    fun getStartTime(): String = "${startTime.hour}:${startTime.minute}"
+    fun getStartTime(): String = getTimeString(startTime)
 
-    fun getEndTime(): String = "${endTime.hour}:${endTime.minute}"
+    fun getEndTime(): String = getTimeString(endTime)
 
     fun getDuration(): String {
         val duration = Duration.between(endTime, startTime).abs()
