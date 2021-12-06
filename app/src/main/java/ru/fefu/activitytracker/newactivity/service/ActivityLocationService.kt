@@ -33,7 +33,6 @@ class ActivityLocationService : Service() {
 
         var distance = 0.0
         var activityId = -1
-        val coordinates = mutableListOf<Pair<Double, Double>>()
 
         val locationRequest: LocationRequest
             get() = LocationRequest.create()
@@ -49,6 +48,8 @@ class ActivityLocationService : Service() {
             ContextCompat.startForegroundService(context, intent)
         }
     }
+
+    private val coordinates = mutableListOf<Pair<Double, Double>>()
 
     private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
 
