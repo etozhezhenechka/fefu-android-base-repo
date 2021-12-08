@@ -17,13 +17,13 @@ import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentProgressNewActivityBinding
 import ru.fefu.activitytracker.newactivity.service.ActivityLocationService
-import kotlin.coroutines.coroutineContext
 
 class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_activity) {
     private var _binding: FragmentProgressNewActivityBinding? = null
     private val binding get() = _binding!!
     private var mapView: org.osmdroid.views.MapView? = null
     private var isRestored = false
+    private var activityId = -1L
 
     private val polyline by lazy {
         Polyline().apply {
@@ -115,12 +115,13 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
         showUserLocation()
 
         isRestored = arguments?.getBoolean("restored")!!
+        activityId = arguments?.getLong("activityId")!!
 
-        App.INSTANCE.db.activityDao().getByIdLiveData(ActivityLocationService.activityId)
+        App.INSTANCE.db.activityDao().getByIdLiveData(activityId.toInt())
             .observe(viewLifecycleOwner) {
                 if (it.coordinateList.isNotEmpty()) {
                     if (isRestored) {
-                        for(coordinate in it.coordinateList) {
+                        for (coordinate in it.coordinateList) {
                             polyline.addPoint(GeoPoint(coordinate.first, coordinate.second))
                         }
                         isRestored = false
@@ -148,7 +149,6 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
             action = ActivityLocationService.ACTION_CANCEL
         }
 
-        val activityId = arguments?.getLong("activityId")
         cancelIntent.putExtra("activityId", activityId)
 
         requireActivity().startService(cancelIntent)
@@ -157,11 +157,11 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
         mapView?.invalidate()
 
         App.INSTANCE.db.activityDao()
-            .updateIsFinishedById(ActivityLocationService.activityId, true)
+            .updateIsFinishedById(activityId.toInt(), true)
 
         App.INSTANCE.db.activityDao()
             .updateDistanceById(
-                ActivityLocationService.activityId,
+                activityId.toInt(),
                 ActivityLocationService.distance
             )
 
