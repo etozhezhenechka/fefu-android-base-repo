@@ -60,7 +60,8 @@ class NewActivityActivity : AppCompatActivity(R.layout.activity_newactivity) {
                 else -> {
                     newFragment = ProgressNewActivityFragment.newInstance(
                         ActivityTypeModel(lastActivity.type).typeStr,
-                        lastActivity.id.toLong()
+                        lastActivity.id.toLong(),
+                        true
                     )
                     newTag = ProgressNewActivityFragment.tag
                 }

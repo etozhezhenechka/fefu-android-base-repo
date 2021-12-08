@@ -135,7 +135,7 @@ class StartNewActivityFragment : Fragment(R.layout.fragment_start_new_activity) 
 
             add(
                 R.id.fragment_view_menu_new_activity,
-                ProgressNewActivityFragment.newInstance(typeTitle, activityId),
+                ProgressNewActivityFragment.newInstance(typeTitle, activityId, false),
                 ProgressNewActivityFragment.tag
             )
 

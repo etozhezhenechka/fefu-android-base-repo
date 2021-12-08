@@ -17,11 +17,13 @@ import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.FragmentProgressNewActivityBinding
 import ru.fefu.activitytracker.newactivity.service.ActivityLocationService
+import kotlin.coroutines.coroutineContext
 
 class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_activity) {
     private var _binding: FragmentProgressNewActivityBinding? = null
     private val binding get() = _binding!!
     private var mapView: org.osmdroid.views.MapView? = null
+    private var isRestored = false
 
     private val polyline by lazy {
         Polyline().apply {
@@ -35,12 +37,17 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
     companion object {
         const val tag = "progress_new_activity_fragment"
 
-        fun newInstance(typeTitle: String, activityId: Long): ProgressNewActivityFragment {
+        fun newInstance(
+            typeTitle: String,
+            activityId: Long,
+            restored: Boolean
+        ): ProgressNewActivityFragment {
             val fragment = ProgressNewActivityFragment()
 
             val args = Bundle()
             args.putString("typeTitle", typeTitle)
             args.putLong("activityId", activityId)
+            args.putBoolean("restored", restored)
             fragment.arguments = args
 
             return fragment
@@ -107,11 +114,20 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
         mapView = activity?.findViewById(R.id.new_activity_map)
         showUserLocation()
 
+        isRestored = arguments?.getBoolean("restored")!!
+
         App.INSTANCE.db.activityDao().getByIdLiveData(ActivityLocationService.activityId)
             .observe(viewLifecycleOwner) {
                 if (it.coordinateList.isNotEmpty()) {
-                    val lastCoordinate = it.coordinateList.last()
-                    polyline.addPoint(GeoPoint(lastCoordinate.first, lastCoordinate.second))
+                    if (isRestored) {
+                        for(coordinate in it.coordinateList) {
+                            polyline.addPoint(GeoPoint(coordinate.first, coordinate.second))
+                        }
+                        isRestored = false
+                    } else {
+                        val lastCoordinate = it.coordinateList.last()
+                        polyline.addPoint(GeoPoint(lastCoordinate.first, lastCoordinate.second))
+                    }
 
                     binding.distanceProgressActivity.text = getDistanceText()
                 }
@@ -149,10 +165,10 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
                 ActivityLocationService.distance
             )
 
-       if (parentFragmentManager.backStackEntryCount > 0) {
-           parentFragmentManager.popBackStack()
-       } else {
-           requireActivity().finish()
-       }
+        if (parentFragmentManager.backStackEntryCount > 0) {
+            parentFragmentManager.popBackStack()
+        } else {
+            requireActivity().finish()
+        }
     }
 }
