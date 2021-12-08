@@ -3,14 +3,17 @@ package ru.fefu.activitytracker.newactivity
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
+import androidx.fragment.app.Fragment
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.views.CustomZoomButtonsController
+import ru.fefu.activitytracker.App
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.databinding.ActivityNewactivityBinding
+import ru.fefu.activitytracker.newactivity.fragment.ProgressNewActivityFragment
 import ru.fefu.activitytracker.newactivity.fragment.StartNewActivityFragment
+import ru.fefu.activitytracker.newactivity.model.ActivityTypeModel
 
 class NewActivityActivity : AppCompatActivity(R.layout.activity_newactivity) {
     private lateinit var binding: ActivityNewactivityBinding
@@ -41,12 +44,30 @@ class NewActivityActivity : AppCompatActivity(R.layout.activity_newactivity) {
         }
 
         if (savedInstanceState == null) {
+            val lastActivity = App.INSTANCE.db.activityDao().getLastActivity()
+            val newFragment: Fragment
+            val newTag: String
+
+            when {
+                lastActivity == null -> {
+                    newFragment = StartNewActivityFragment.newInstance()
+                    newTag = StartNewActivityFragment.tag
+                }
+                lastActivity.isFinished -> {
+                    newFragment = StartNewActivityFragment.newInstance()
+                    newTag = StartNewActivityFragment.tag
+                }
+                else -> {
+                    newFragment = ProgressNewActivityFragment.newInstance(
+                        ActivityTypeModel(lastActivity.type).typeStr,
+                        lastActivity.id.toLong()
+                    )
+                    newTag = ProgressNewActivityFragment.tag
+                }
+            }
+
             supportFragmentManager.beginTransaction().apply {
-                add(
-                    R.id.fragment_view_menu_new_activity,
-                    StartNewActivityFragment.newInstance(),
-                    StartNewActivityFragment.tag
-                )
+                add(R.id.fragment_view_menu_new_activity, newFragment, newTag)
                 commit()
             }
         }

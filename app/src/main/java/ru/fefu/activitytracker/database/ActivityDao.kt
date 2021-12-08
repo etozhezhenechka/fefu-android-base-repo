@@ -13,6 +13,9 @@ interface ActivityDao {
     @Query("SELECT * FROM activity WHERE id=:id")
     fun getById(id: Int): Activity
 
+    @Query("SELECT * FROM activity ORDER by id DESC LIMIT 1")
+    fun getLastActivity(): Activity?
+
     @Query("SELECT * FROM activity WHERE id=:id LIMIT 1")
     fun getByIdLiveData(id: Int): LiveData<Activity>
 

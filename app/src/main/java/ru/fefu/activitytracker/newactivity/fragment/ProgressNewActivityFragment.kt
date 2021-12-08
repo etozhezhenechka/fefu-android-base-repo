@@ -149,6 +149,10 @@ class ProgressNewActivityFragment : Fragment(R.layout.fragment_progress_new_acti
                 ActivityLocationService.distance
             )
 
-        parentFragmentManager.popBackStack()
+       if (parentFragmentManager.backStackEntryCount > 0) {
+           parentFragmentManager.popBackStack()
+       } else {
+           requireActivity().finish()
+       }
     }
 }
