@@ -5,17 +5,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import ru.fefu.activitytracker.R
 import ru.fefu.activitytracker.tracker.fragment.UsersActivityDetailsFragment
-import ru.fefu.activitytracker.tracker.model.CardItemModel
 import ru.fefu.activitytracker.tracker.model.DateLabelModel
 import ru.fefu.activitytracker.tracker.model.UsersActivityModel
 import ru.fefu.activitytracker.tracker.viewholder.UserActivityViewHolder
 import ru.fefu.activitytracker.tracker.viewholder.DateLabelViewHolder
 import ru.fefu.activitytracker.tracker.viewholder.ItemViewHolder
 
-class UsersActivityAdapter(
-    items: MutableList<CardItemModel>,
-    private val fragmentManager: FragmentManager
-) : MyActivityAdapter(items, fragmentManager) {
+class UsersActivityAdapter(private val fragmentManager: FragmentManager) :
+    MyActivityAdapter(fragmentManager) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return when (viewType) {
@@ -34,7 +31,7 @@ class UsersActivityAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bindValues(items[position])
+        holder.bindValues(currentList[position])
 
         if (holder is UserActivityViewHolder) {
             holder.itemView.setOnClickListener {
@@ -45,7 +42,7 @@ class UsersActivityAdapter(
 
                     add(
                         R.id.fragment_view_activity,
-                        UsersActivityDetailsFragment.newInstance(),
+                        UsersActivityDetailsFragment.newInstance(holder.activityId),
                         UsersActivityDetailsFragment.tag
                     )
 
@@ -58,7 +55,7 @@ class UsersActivityAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(items[position]::class) {
+        return when (currentList[position]::class) {
             UsersActivityModel::class -> 0
             DateLabelModel::class -> 1
             else -> -1

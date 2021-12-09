@@ -35,6 +35,8 @@
     <string name="welcome_text">Время потренить</string>
     <string name="welcome_sub_text">Нажимай на кнопку ниже и начинаем трекать активность</string>
 
+    <string name="start_label_myactivity">Старт</string>
+    <string name="finish_label_myactivity">Финиш</string>
     <string name="comment_hint_myactivity">Комментарий</string>
 
     <string name="menu_details_remove">Удалить</string>
@@ -55,6 +57,6 @@
     <string name="activity_start">Начать</string>
 
     <string name="acitvity_name_progress">Велосипед</string>
-    <string name="acitvity_distance_progress">14 км</string>
+    <string name="acitvity_distance_progress">0.0 м</string>
     <string name="acitvity_time_progress">00:01:46</string>
 </resources>
